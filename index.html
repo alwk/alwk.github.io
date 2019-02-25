@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="description" content="оценки фильмов, сериалов и игр"/>
+<title>Оценки фильмов, сериалов и игр</title>
+<style type="text/css">
+body {font:12px Verdana, Arial; margin:25px; background-color:#1b2838; color:#acb2b8; text-align: center;}
+
+table a{text-decoration:none; color:#d4d4d4; font-weight:bold;}
+
+table {max-width:960px; border-left:1px solid #17354c; border-top:1px solid #17354c; border-bottom:none; margin:0 auto; background-color: #0d141c;}
+table th{background-color:#214b6b; text-align:left; color:#d4d4d4; border:1px solid #17354c; border-right:none; padding:10px; text-align:center; white-space:nowrap;}
+table td{border-bottom:1px solid #17354c; border-right:1px solid #17354c; padding:6px 4px;}
+table tr:nth-child(even) td{background-color:#16202d;}
+
+.desc,.asc,.sort{width:5px; height:8px; display:inline-block;background-repeat: no-repeat; padding:0px 5px 0 0;}
+	
+.desc{background-image:url(images/desc.gif)}
+.asc{background-image:url(images/asc.gif);}
+.sort{background-image:url(images/sort.gif);}
+
+#sub-desc{color:#384959; padding-top:10px;}
+
+.tabs {width: 100%; padding: 0px; margin: 30px auto 0 auto;}
+.tabs>input { display:none; }
+.tabs>div { display: none;
+}
+.tabs>label {
+    display: inline-block;
+    padding: 7px;
+    margin: 0 -5px -1px 0;
+    text-align: center;
+    color: #d4d4d4;
+    border: 1px solid #2b526d;
+    background-color: #376d91;
+    cursor: pointer;
+}
+.tabs>label:hover {
+    background-color: #4685af;
+}
+.tabs>input:checked + label {
+	color:#d4d4d4;
+	border:1px solid #17354c;
+	border-bottom:1px solid #17354c;
+	background-color: #2b5470;
+}
+
+#tab_1:checked ~ #content_1,
+#tab_2:checked ~ #content_2,
+#tab_3:checked ~ #content_3,
+#tab_4:checked ~ #content_4,
+#tab_5:checked ~ #content_5,
+#tab_6:checked ~ #content_6,
+#tab_7:checked ~ #content_7,
+#tab_8:checked ~ #content_8,
+#tab_9:checked ~ #content_9,
+#tab_10:checked ~ #content_10 {display: block;}
+</style>
+<script src="sorttable.js"></script>
+</head>
+<body>
+<div class="tabs">
+	<input type="radio" name="inset" value="" id="tab_1" checked>
+    <label for="tab_1">Фильмы</label>
+	
+	<input type="radio" name="inset" value="" id="tab_2">
+    <label for="tab_2">Сериалы</label>
+
+    <input type="radio" name="inset" value="" id="tab_3">
+    <label for="tab_3">PC игры</label>
+
+	<input type="radio" name="inset" value="" id="tab_4">
+    <label for="tab_4">PSP игры</label>
+	
+    <input type="radio" name="inset" value="" id="tab_5">
+    <label for="tab_5">PlayStation 1 игры</label>
+
+    <input type="radio" name="inset" value="" id="tab_6">
+    <label for="tab_6">PlayStation 2 игры</label>
+	
+	<input type="radio" name="inset" value="" id="tab_7">
+    <label for="tab_7">PlayStation 3 игры</label>
+
+    <input type="radio" name="inset" value="" id="tab_8">
+    <label for="tab_8">Wii игры</label>
+	
+	<input type="radio" name="inset" value="" id="tab_9">
+    <label for="tab_9">NES (Денди) игры</label>
+	
+	<input type="radio" name="inset" value="" id="tab_10">
+    <label for="tab_10">Sega игры</label>
+	
+	<div id="content_1"><!--Фильмы-->
+		<h1>Фильмы</h1>
+        <table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
+			<thead>
+				<tr>
+					<th><b>Название</b></th>
+					<th><b>Оценка</b></th>
+					<th class="nosort"><b>Дата просмотра</b></th>
+					<th class="nosort"><b>Комментарий</b></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Хорошие люди (2013)</td>
+					<td>6</td>
+					<td>27.01.19</td>
+					<td></td>
+				</tr>				<tr>
+					<td>Лангольеры (1995)</td>
+					<td>6.3</td>
+					<td>29.08.18</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>НЛО (2018)</td>
+					<td>6</td>
+					<td>23.08.18</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Джунгли (2017)</td>
+					<td>8</td>
+					<td>16.07.18</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>VOLDEMORT: Origins of the Heir (2018)</td>
+					<td>3</td>
+					<td>09.06.18</td>
+					<td>Глупый отвратительный сюжет.</td>
+				</tr>
+			</tbody>
+		</table>
+    </div>
+	
+	<div id="content_2"><!--Сериалы-->
+		<h1>Сериалы</h1>
+        <table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
+			<thead>
+				<tr>
+					<th><b>Название</b></th>
+					<th><b>Оценка</b></th>
+					<th width="120px" class="nosort"><b>Дата просмотра</b></th>
+					<th class="nosort"><b>Комментарий</b></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Побег из тюрьмы Даннемора</td>
+					<td>7.5</td>
+					<td>28.01.19</td>
+					<td></td>
+				</tr>				<tr>
+					<td>Озарк</td>
+					<td>7.5</td>
+					<td>02.10.18</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Оранжевый - хит сезона</td>
+					<td>7.5</td>
+					<td>17.08.18</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Американцы</td>
+					<td>9</td>
+					<td>02.06.18</td>
+					<td>Атмосферный, хорошо снят, отличная актерская игра и интересный сюжет.</td>
+				</tr>
+				<tr>
+					<td>Черное зеркало</td>
+					<td>8</td>
+					<td>03.01.18</td>
+					<td>Некоторые серии крутые.</td>
+				</tr>
+				<tr>
+					<td>Родина</td>
+					<td>7.3</td>
+					<td>01.05.18</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Мотель Бейтса</td>
+					<td>7.5</td>
+					<td>26.04.17</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Конец детства</td>
+					<td>7</td>
+					<td>19.04.15</td>
+					<td>Необычный сюжет.</td>
+				</tr>
+			</tbody>
+		</table>
+    </div>
+
+    <div id="content_3"><!--PC игры-->
+		<h1>PC игры</h1>
+		<table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
+			<thead>
+				<tr>
+					<th><b>Название</b></th>
+					<th><b>Оценка</b></th>
+					<th><b>Статус</b></th>
+					<th class="nosort"><b>Дата прохождения</b></th>
+					<th class="nosort"><b>Комментарий</b></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Metro Exodus (2019)</td>
+					<td>8.5</td>
+					<td>Пройдено</td>
+					<td>25.02.19</td>
+					<td>Не совсем понравились уровни: "Волга" и "Каспий", квесты и "открытый" мир не совсем то, что ждешь от игры, а в остальном всё круто и атмосферно. Концовка эпичная.</td>
+				</tr>
+				<tr>
+					<td>Crysis 2 (2011)</td>
+					<td>8</td>
+					<td>Пройдено</td>
+					<td>15.02.19</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Resident Evil 2 Remake (2019)</td>
+					<td>9.2</td>
+					<td>Пройдено</td>
+					<td>03.02.19</td>
+					<td>Шедевр. Игра полностью погружает в свой мир. Проходится на одном дыхании.</td>
+				</tr>
+				<tr>
+					<td>Operation Warcade VR (2017)</td>
+					<td>7.2</td>
+					<td>Пройдено</td>
+					<td>27.01.19</td>
+					<td>Много разных VR механик в одной игре.</td>
+				</tr>
+				<tr>
+					<td>A Story About My Uncle (2014)</td>
+					<td>6</td>
+					<td>Пройдено</td>
+					<td>23.01.19</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Hitman 2 (2018)</td>
+					<td>6</td>
+					<td>Пройдено</td>
+					<td>06.11.18</td>
+					<td>Кривое управление, однообразие и уныние. Песочницы никакой нет, псевдо песочница с балванками, ходячими по кругу. Графика крутая.</td>
+				</tr>
+				<tr>
+					<td>Shadow of the Tomb Raider (2018)</td>
+					<td>9</td>
+					<td>Пройдено</td>
+					<td>25.11.18</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Postal 2: Apocalypse Weekend (2005)</td>
+					<td>5.5</td>
+					<td>Пройдено</td>
+					<td>07.11.18</td>
+					<td>Слепили на скорую руку.</td>
+				</tr>
+				<tr>
+					<td>Postal 2 (2003)</td>
+					<td>7</td>
+					<td>Пройдено</td>
+					<td>07.11.18</td>
+					<td>Короткая. Бегать от задания до задание раздражает.</td>
+				</tr>
+				<tr>
+					<td>Cryostasis: Sleep of Reason (2009)</td>
+					<td>7.2</td>
+					<td>Пройдено</td>
+					<td>06.11.18</td>
+					<td>Атмосферно, только финальный босс не очень вписывается в окружение.</td>
+				</tr>
+				<tr>
+					<td>Nosferatu: The Wrath of Malachi (2003)</td>
+					<td>7.2</td>
+					<td>Пройдено</td>
+					<td>04.11.18</td>
+					<td>Атмосферно, но много лабиринтов и однообразный дизайн уровней.</td>
+				</tr>
+				<tr>
+					<td>Advent Rising (2005)</td>
+					<td>8</td>
+					<td>Пройдено</td>
+					<td>02.11.18</td>
+					<td>По началу не кажется чем-то интересным, но по ходу прохождения становится все интереснее и интереснее.</td>
+				</tr>
+				<tr>
+					<td>Total Overdose (2005)</td>
+					<td>7.5</td>
+					<td>Пройдено</td>
+					<td>30.10.18</td>
+					<td>Финальная часть игры крутая. Для 2005 года очень круто. Озвучка 1С плохая, лучше играть с оригинальной.</td>
+				</tr>
+				<tr>
+					<td>Vanquish (2017)</td>
+					<td>6.3</td>
+					<td>Пройдено</td>
+					<td>26.10.18</td>
+					<td>Красивые уровни, крутой космический сеттинг, чем собственно и интересна эта игра. Гемплей простенький, однообразный.</td>
+				</tr>
+				<tr>
+					<td>The Simpsons Hit & Run (2003)</td>
+					<td>5</td>
+					<td>Пройдено</td>
+					<td>23.10.18</td>
+					<td>Пройдены только основные миссии.<br>
+	Геймплей однообразный, в основном это подбор предметов, на автомобиле, за время или гонки. Физика машин плохая (для 2003 года наверное пойдет).</td>
+				</tr>
+				<tr>
+					<td>Narcosis (2017)</td>
+					<td>7.5</td>
+					<td>Пройдено</td>
+					<td>05.06.18</td>
+					<td>Очень атмосферный качественный хоррор про подводную тему. Местами напоминает Outlast. Пройдена в VR.</td>
+				</tr>
+				<tr>
+					<td>Far Cry 5 (2018)</td>
+					<td>6.5</td>
+					<td>Пройдено</td>
+					<td>23.04.18</td>
+					<td>Трешовый сюжет.</td>
+				</tr>
+				<tr>
+					<td>Spider-Man (2001)</td>
+					<td>7.5</td>
+					<td>Пройдено</td>
+					<td>26.03.18</td>
+					<td>Простой приятный экшен про человека-паука. Уникальный гемплый.</td>
+				</tr>
+				<tr>
+					<td>Harry Potter and the Philosopher's Stone (2001)</td>
+					<td>9.2</td>
+					<td>Пройдено</td>
+					<td>30.12.17</td>
+					<td>Интересный сеттинг, разнообразный гемплей, секреты, сочная гамма. Не очень дружит с мышкой.</td>
+				</tr>
+				<tr>
+					<td>Call of Duty: WWII (2017)</td>
+					<td>5.5</td>
+					<td>Пройдено</td>
+					<td>11.11.17</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Resident Evil 3 (1999)</td>
+					<td>8.5</td>
+					<td>Пройдено</td>
+					<td>31.10.17</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Mafia III (2017)</td>
+					<td>5.5</td>
+					<td>Пройдено</td>
+					<td>08.10.17</td>
+					<td>Полная халтура. Загубили серию.</td>
+				</tr>
+				<tr>
+					<td>Resident Evil 7: Biohazard (2017)</td>
+					<td>8</td>
+					<td>Пройдено</td>
+					<td>06.02.17</td>
+					<td>По сути новая игра, от Resident Evil только название.</td>
+				</tr>
+				<tr>
+					<td>Harry Potter and the Chamber of Secrets (2002)</td>
+					<td>9.2</td>
+					<td>Пройдено</td>
+					<td>29.12.18</td>
+					<td>Интересный сеттинг, разнообразный гемплей, секреты, сочная гамма.</td>
+				</tr>
+				<tr>
+					<td>Rise of the Tomb Raider (2016)</td>
+					<td>9</td>
+					<td>Пройдено</td>
+					<td>17.02.16</td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+    </div>
+	
+	
+	<div id="content_4"><!--PSP-->
+		<h1>PSP игры</h1>
+		<table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
+			<thead>
+				<tr>
+					<th><b>Название</b></th>
+					<th><b>Оценка</b></th>
+					<th><b>Статус</b></th>
+					<th class="nosort"><b>Дата прохождения</b></th>
+					<th class="nosort"><b>Комментарий</b></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Metal Slug 5 (2003)</td>
+					<td>7.2</td>
+					<td>Пройдено</td>
+					<td>14.12.18</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Gangs of London (2006)</td>
+					<td>7.2</td>
+					<td>Пройдено</td>
+					<td>07.12.18</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Metal Slug 4 (2002)</td>
+					<td>7.6</td>
+					<td>Пройдено</td>
+					<td>09.11.18</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Metal Slug 3 (2000)</td>
+					<td>7.6</td>
+					<td>Пройдено</td>
+					<td>07.11.18</td>
+					<td>Как всегда на высоте, в каждой новой версии что-нибудь новое.</td>
+				</tr>
+				<tr>
+					<td>Chili Con Carnage (2007)</td>
+					<td>6.4</td>
+					<td>Пройдено</td>
+					<td>28.10.18</td>
+					<td>Урезанный Total Overdose.</td>
+				</tr>
+				<tr>
+					<td>Metal Slug 2 (1998)</td>
+					<td>7.6</td>
+					<td>Пройдено</td>
+					<td>23.10.18</td>
+					<td>Такой же крутой платформер, как и Metal Slug 1, даже еще лучше. В конце доставила сцена, где враги, которых мы убивали всю игру вместе с нами убивали финального босса (сплотились против общего врага).</td>
+				</tr>
+				<tr>
+					<td>Metal Slug (1996)</td>
+					<td>7.5</td>
+					<td>Пройдено</td>
+					<td>25.09.18</td>
+					<td>Очень крутой платформер, один из лучших. Все красиво, живо и проработано, масса интересных идей.</td>
+				</tr>
+				<tr>
+					<td>Syphon Filter: Dark Mirror (2006)</td>
+					<td>6.5</td>
+					<td>Пройдено</td>
+					<td>17.01.18</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Syphon Filter: Logan's Shadow (2007)</td>
+					<td>8</td>
+					<td>Пройдено</td>
+					<td>24.12.17</td>
+					<td>Разнообразный гемплей.</td>
+				</tr>
+			</tbody>
+		</table>
+	
+	
+    </div>
+	
+    <div id="content_5"><!--PS1-->
+		<h1>PlayStation 1 игры</h1>
+		<table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
+			<thead>
+				<tr>
+					<th><b>Название</b></th>
+					<th><b>Оценка</b></th>
+					<th><b>Статус</b></th>
+					<th class="nosort"><b>Дата прохождения</b></th>
+					<th class="nosort"><b>Комментарий</b></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Resident Evil 1 (1996)</td>
+					<td>7.5</td>
+					<td>Пройдено</td>
+					<td>14.12.18</td>
+					<td>Затянутая, под конец уже совсем надоедает. Играется приятнее ремейка.</td>
+				</tr>
+				<tr>
+					<td>Resident Evil 2 (1998)</td>
+					<td>8.5</td>
+					<td>Пройдено</td>
+					<td>14.07.18</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Spider-Man (2000)</td>
+					<td>7.5</td>
+					<td>Пройдено</td>
+					<td>26.03.18</td>
+					<td>Простой приятный экшен про человека-паука. Уникальный гемплый.</td>
+				</tr>
+			</tbody>
+		</table>
+		<div id="sub-desc">* Пройдены на эмуляторе ePSXe, с горячими сохраненями или на PSP.</div>
+	   
+    </div>
+    <div id="content_6"><!--PS2-->
+		<h1>PlayStation 2 игры</h1>
+	   	<table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
+			<thead>
+				<tr>
+					<th><b>Название</b></th>
+					<th><b>Оценка</b></th>
+					<th><b>Статус</b></th>
+					<th class="nosort"><b>Дата прохождения</b></th>
+					<th class="nosort"><b>Комментарий</b></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Resident Evil Code: Veronica (2002)</td>
+					<td>7</td>
+					<td>Пройдено</td>
+					<td>11.05.18</td>
+					<td>Классический Resident Evil, в стиле первых трех частей. Местами интересный.</td>
+				</tr>
+			</tbody>
+		</table>
+		<div id="sub-desc">* Пройдены на эмуляторе PCSX2, с горячими сохраненями.</div>
+	
+	</div>
+	
+	<div id="content_7"><!--PS3-->
+		<h1>PlayStation 3 игры</h1>
+	   	<table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
+			<thead>
+				<tr>
+					<th><b>Название</b></th>
+					<th><b>Оценка</b></th>
+					<th><b>Статус</b></th>
+					<th class="nosort"><b>Дата прохождения</b></th>
+					<th class="nosort"><b>Комментарий</b></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>The Last of Us (2013)</td>
+					<td>9</td>
+					<td>Пройдено</td>
+					<td>13.01.19</td>
+					<td>Управление немного кривое, нет автоприцела, в остальном все круто.</td>
+				</tr>
+			</tbody>
+		</table>
+		<div id="sub-desc">* Пройдены через сервис Playstation Now или на эмуляторе RPCS3.</div>
+	
+	</div>
+    <div id="content_8"><!--Wii-->
+		<h1>Wii игры</h1>
+        <table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
+			<thead>
+				<tr>
+					<th><b>Название</b></th>
+					<th><b>Оценка</b></th>
+					<th><b>Статус</b></th>
+					<th class="nosort"><b>Дата прохождения</b></th>
+					<th class="nosort"><b>Комментарий</b></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Resident Evil: The Darkside Chronicles (2009)</td>
+					<td>5</td>
+					<td>Пройдено</td>
+					<td>03.09.18</td>
+					<td>Первая подобная игра пройденная мной. Обычный тупой тир по сюжетам Resident Evil. Ничего интересного придумать не смогли, хотя тут наверное ничего и не придумаешь. Есть локации из Resident Evil 2 и Code Veronica, можно на них поглядеть.</td>
+				</tr>
+			</tbody>
+		</table>
+		<div id="sub-desc">* Пройдены на эмуляторе Dolphin, с контроллерами Razer Hydra.</div>
+    </div>
+	
+	<div id="content_9"><!--Денди-->
+		<h1>NES игры</h1>
+		<table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
+			<thead>
+				<tr>
+					<th><b>Название</b></th>
+					<th><b>Оценка</b></th>
+					<th><b>Статус</b></th>
+					<th class="nosort"><b>Дата прохождения</b></th>
+					<th class="nosort"><b>Комментарий</b></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Disney’s Aladdin (1993)</td>
+					<td>7</td>
+					<td>Пройдено</td>
+					<td>14.03.18</td>
+					<td>Красочные карты, хороший гемплей, разнообразный. Дают полетать на ковре самолете.
+	Очень крутая возможность "сохранения". После прохождения уровня дают код из картинок, который можно ввести в меню и "загрузится" на пройденный уровень, такой метод нужно было использовать всем разработчикам игр на NES, SNES и Sega. Пройдена с горячими сохранениями.</td>
+				</tr>
+			</tbody>
+		</table>
+		<div id="sub-desc">* Пройдены на эмуляторе NesterJ на PSP, с горячими сохраненями.</div>
+    </div>
+	
+	<div id="content_10"><!--Sega-->
+		<h1>Sega игры</h1>
+		<table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
+			<thead>
+				<tr>
+					<th><b>Название</b></th>
+					<th><b>Оценка</b></th>
+					<th><b>Статус</b></th>
+					<th class="nosort"><b>Дата прохождения</b></th>
+					<th class="nosort"><b>Комментарий</b></th>
+				</tr>
+			</thead>
+			<tbody>
+					<tr>
+						<td>Contra: Hard Corps (1994)</td>
+						<td>6.5</td>
+						<td>Пройдено</td>
+						<td>21.05.18</td>
+						<td>Очень динамичная игра. </td>
+					</tr>
+			</tbody>
+		</table>
+		<div id="sub-desc">* Пройдены на эмуляторе PicoDrive на PSP, с горячими сохраненями.</div>
+	</div>
+	
+</div>
+<div style="color:#626366; padding-top:10px">Обновления сверху</div>
+</body>
+</html>
