@@ -55,7 +55,8 @@ table tr:nth-child(even) td{background-color:#16202d;}
 #tab_7:checked ~ #content_7,
 #tab_8:checked ~ #content_8,
 #tab_9:checked ~ #content_9,
-#tab_10:checked ~ #content_10 {display: block;}
+#tab_10:checked ~ #content_10,
+#tab_11:checked ~ #content_11 {display: block;}
 </style>
 <script src="sorttable.js"></script>
 </head>
@@ -81,15 +82,18 @@ table tr:nth-child(even) td{background-color:#16202d;}
 	
 	<input type="radio" name="inset" value="" id="tab_7">
     <label for="tab_7">PlayStation 3</label>
-
-    <input type="radio" name="inset" value="" id="tab_8">
-    <label for="tab_8">Wii</label>
 	
-	<input type="radio" name="inset" value="" id="tab_9">
-    <label for="tab_9">NES</label>
+	<input type="radio" name="inset" value="" id="tab_8">
+    <label for="tab_8">PlayStation 4</label>
+
+    <input type="radio" name="inset" value="" id="tab_9">
+    <label for="tab_9">Wii</label>
 	
 	<input type="radio" name="inset" value="" id="tab_10">
-    <label for="tab_10">Sega Mega Drive</label>
+    <label for="tab_10">NES</label>
+	
+	<input type="radio" name="inset" value="" id="tab_11">
+    <label for="tab_11">Sega Mega Drive</label>
 	
 	<div id="content_1"><!--Фильмы-->
 		<h1>Фильмы</h1>
@@ -303,6 +307,20 @@ table tr:nth-child(even) td{background-color:#16202d;}
 			</thead>
 			<tbody>
 				<tr>
+					<td>Лучше звоните Солу (2015)</td>
+					<td>7.5</td>
+					<td>1</td>
+					<td>29.04.20</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Озарк (2017)</td>
+					<td>7.5</td>
+					<td>1</td>
+					<td>01.05.20</td>
+					<td>Местами конечно имеет бред, но в целом следить за сюжетом интересно.</td>
+				</tr>
+				<tr>
 					<td>Родина (2011)</td>
 					<td>8.5</td>
 					<td>1</td>
@@ -394,13 +412,6 @@ table tr:nth-child(even) td{background-color:#16202d;}
 					<td></td>
 				</tr>
 				<tr>
-					<td>Озарк (2017)</td>
-					<td>7.5</td>
-					<td>1</td>
-					<td>02.10.18</td>
-					<td></td>
-				</tr>
-				<tr>
 					<td>Оранжевый - хит сезона (2013)</td>
 					<td>7.5</td>
 					<td>1</td>
@@ -460,6 +471,14 @@ table tr:nth-child(even) td{background-color:#16202d;}
 				</tr>
 			</thead>
 			<tbody>
+				<tr>
+					<td>Trine 4 (2019)</td>
+					<td>7.2</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>30.04.20</td>
+					<td>Красивые локации. Местами перебор со сложностью, местами изматывает. Механик столько, что о некоторых забываешь и тупишь.</td>
+				</tr>
 				<tr>
 					<td>Resident Evil 3 (2020)</td>
 					<td>9</td>
@@ -1044,9 +1063,44 @@ table tr:nth-child(even) td{background-color:#16202d;}
 			</tbody>
 		</table>
 		<div id="sub-desc">* Пройдены через сервис Playstation Now или на эмуляторе RPCS3.</div>
-	
 	</div>
-    <div id="content_8"><!--Wii-->
+	
+		<div id="content_8"><!--PS4-->
+		<h1>PlayStation 4 игры</h1>
+	   	<table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
+			<thead>
+				<tr>
+					<th><b>Название</b></th>
+					<th><b>Оценка</b></th>
+					<th><b>Статус</b></th>
+					<th><b>Пройдено раз</b></th>
+					<th class="nosort"><b>Дата прохождения</b></th>
+					<th class="nosort"><b>Комментарий</b></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Uncharted 3: Иллюзии Дрейка (2011)</td>
+					<td>9.1</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>14.05.20</td>
+					<td>Красивые локации, разнообразный геймплей, хороший сюжет, юмор. Высокий уровень детализации и проработки. В начале немного скучновато, но потом подренько идёт.</td>
+				</tr>
+				<tr>
+					<td>Spider-Man (2018)</td>
+					<td>8</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>08.05.20</td>
+					<td>Затянутая, не хватает плавного развития событий (по 2 босса почти подряд явный перебор), как в том же первом пауке. Побочные миссии и сбор предметов портят игру. Геймплей интересный, разнообразный, но боевка однообразная, но сделана неплохо. Город сделан потрясающе. Детские шутки и мистика тоже лишние.</td>
+				</tr>
+			</tbody>
+		</table>
+		<div id="sub-desc">* Пройдены через сервис Playstation Now.</div>
+	</div>
+	
+    <div id="content_9"><!--Wii-->
 		<h1>Wii игры</h1>
         <table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
 			<thead>
@@ -1073,7 +1127,7 @@ table tr:nth-child(even) td{background-color:#16202d;}
 		<div id="sub-desc">* Пройдены на эмуляторе Dolphin, с контроллерами Razer Hydra.</div>
     </div>
 	
-	<div id="content_9"><!--Денди-->
+	<div id="content_10"><!--Денди-->
 		<h1>NES игры</h1>
 		<table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
 			<thead>
@@ -1173,7 +1227,7 @@ table tr:nth-child(even) td{background-color:#16202d;}
 		<div id="sub-desc">* Пройдены на эмуляторе Nester или FCEUX на ПК или NesterJ на PSP, с горячими сохраненями.</div>
     </div>
 	
-	<div id="content_10"><!--Sega Mega Drive-->
+	<div id="content_11"><!--Sega Mega Drive-->
 		<h1>Sega Mega Drive игры</h1>
 		<table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
 			<thead>
