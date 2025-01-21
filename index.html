@@ -27,18 +27,18 @@ table tr:nth-child(even) td{background-color:#16202d;}
 .tabs>div { display: none;
 }
 .tabs>label {
-    display: inline-block;
-    padding: 7px;
-    margin: 0 -5px -1px 0;
-    text-align: center;
-    color: #d4d4d4;
-    border: 1px solid #2b526d;
-    background-color: #376d91;
-    cursor: pointer;
+	display: inline-block;
+	padding: 7px;
+	margin: 0 -5px -1px 0;
+	text-align: center;
+	color: #d4d4d4;
+	border: 1px solid #2b526d;
+	background-color: #376d91;
+	cursor: pointer;
 	user-select: none;
 }
 .tabs>label:hover {
-    background-color: #4685af;
+	background-color: #4685af;
 }
 .tabs>input:checked + label {
 	color:#d4d4d4;
@@ -63,63 +63,65 @@ table tr:nth-child(even) td{background-color:#16202d;}
 #tab_14:checked ~ #content_14,
 #tab_15:checked ~ #content_15,
 #tab_16:checked ~ #content_16 {display: block;}
+
+a{color:#626366; text-decoration:none;}
 </style>
 <script src="sorttable.js"></script>
 </head>
 <body>
 <div class="tabs">
 	<input type="radio" name="inset" value="" id="tab_1" checked>
-    <label for="tab_1">Фильмы</label>
+	<label for="tab_1">Фильмы</label>
 	
 	<input type="radio" name="inset" value="" id="tab_2">
-    <label for="tab_2">Сериалы</label>
+	<label for="tab_2">Сериалы</label>
 
-    <input type="radio" name="inset" value="" id="tab_3">
-    <label for="tab_3">PC</label>
+	<input type="radio" name="inset" value="" id="tab_3">
+	<label for="tab_3">PC</label>
 	
-    <input type="radio" name="inset" value="" id="tab_4">
-    <label for="tab_4">VR</label>
+	<input type="radio" name="inset" value="" id="tab_4">
+	<label for="tab_4">VR</label>
 
 	<input type="radio" name="inset" value="" id="tab_5">
-    <label for="tab_5">PSP</label>
+	<label for="tab_5">PSP</label>
 	
-    <input type="radio" name="inset" value="" id="tab_6">
-    <label for="tab_6">PSX</label>
+	<input type="radio" name="inset" value="" id="tab_6">
+	<label for="tab_6">PSX</label>
 
-    <input type="radio" name="inset" value="" id="tab_7">
-    <label for="tab_7">PS2</label>
+	<input type="radio" name="inset" value="" id="tab_7">
+	<label for="tab_7">PS2</label>
 	
 	<input type="radio" name="inset" value="" id="tab_8">
-    <label for="tab_8">PS3</label>
+	<label for="tab_8">PS3</label>
 	
 	<input type="radio" name="inset" value="" id="tab_9">
-    <label for="tab_9">PS4</label>
+	<label for="tab_9">PS4</label>
 	
 	<input type="radio" name="inset" value="" id="tab_10">
-    <label for="tab_10">Switch</label>
+	<label for="tab_10">Switch</label>
 
-    <input type="radio" name="inset" value="" id="tab_11">
-    <label for="tab_11">Wii</label>
+	<input type="radio" name="inset" value="" id="tab_11">
+	<label for="tab_11">Wii</label>
 	
 	<input type="radio" name="inset" value="" id="tab_12">
-    <label for="tab_12">NES</label>
+	<label for="tab_12">NES</label>
 	
 	<input type="radio" name="inset" value="" id="tab_13">
-    <label for="tab_13">SMD</label>
+	<label for="tab_13">SMD</label>
 	
 	<input type="radio" name="inset" value="" id="tab_14">
-    <label for="tab_14">GB</label>
+	<label for="tab_14">GB</label>
 	
 	<input type="radio" name="inset" value="" id="tab_15">
-    <label for="tab_15">GBA</label>
+	<label for="tab_15">GBA</label>
 	
 	<input type="radio" name="inset" value="" id="tab_16">
-    <label for="tab_16">Книги</label>
+	<label for="tab_16">Книги</label>
 
 	
 	<div id="content_1"><!--Фильмы-->
 		<h1>Фильмы</h1>
-        <table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
+		<table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
 			<thead>
 				<tr>
 					<th><b>Название</b></th>
@@ -130,6 +132,27 @@ table tr:nth-child(even) td{background-color:#16202d;}
 				</tr>
 			</thead>
 			<tbody>
+				<tr>
+					<td>Тринадцатый этаж (1999)</td>
+					<td>8</td>
+					<td>2</td>
+					<td>18.01.25</td>
+					<td>Интересные идеи, необычно.</td>
+				</tr>
+				<tr>
+					<td>Ускорение (2024)</td>
+					<td>8.7</td>
+					<td>1</td>
+					<td>17.01.25</td>
+					<td>Интересный, необычный сюжет. Есть нестандартные повороты.</td>
+				</tr>
+				<tr>
+					<td>Остров Изгоев (2023)</td>
+					<td>8.5</td>
+					<td>1</td>
+					<td>15.01.25</td>
+					<td>Интересный, но тяжелый сюжет. Местами слишком жизненно.</td>
+				</tr>
 				<tr>
 					<td>Чрево (2010)</td>
 					<td>7.5</td>
@@ -1042,11 +1065,11 @@ table tr:nth-child(even) td{background-color:#16202d;}
 				</tr>
 			</tbody>
 		</table>
-    </div>
+	</div>
 	
 	<div id="content_2"><!--Сериалы-->
 		<h1>Сериалы</h1>
-        <table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
+		<table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
 			<thead>
 				<tr>
 					<th><b>Название</b></th>
@@ -1058,13 +1081,21 @@ table tr:nth-child(even) td{background-color:#16202d;}
 			</thead>
 			<tbody>
 				<tr>
+					<td>Бункер / Укрытие (2023)</td>
+					<td>6.5</td>
+					<td>1</td>
+					<td>20.01.25</td>
+					<td>Местами нудно, местами интересно. Просмотрено два сезона.</td>
+				</tr>
+				<tr>
 					<td>Конец детства (2015)</td>
 					<td>8.5</td>
 					<td>1</td>
 					<td>01.12.24</td>
 					<td>Необычный, нестандартный сюжет, с интересными идеями.</td>
 				</tr>
-				<td>Извне (2022)</td>
+				<tr>
+					<td>Извне (2022)</td>
 					<td>6</td>
 					<td>1</td>
 					<td>26.11.24</td>
@@ -1168,14 +1199,6 @@ table tr:nth-child(even) td{background-color:#16202d;}
 					<td>12.07.23</td>
 					<td>Интересно, но тема не достаточно раскрыта и мало интриг.</td>
 				</tr>
-				<tr>
-					<td>Бункер (2023)</td>
-					<td>7</td>
-					<td>1</td>
-					<td>03.07.23</td>
-					<td>Местами нудно, местами интересно. Просмотрен первый сезон.</td>
-				</tr>
-				<tr>
 				<tr>
 					<td>Черное зеркало (2011)</td>
 					<td>8</td>
@@ -1342,7 +1365,7 @@ table tr:nth-child(even) td{background-color:#16202d;}
 					<td>3</td>
 					<td>1</td>
 					<td>22.10.21</td>
-					<td>Набор скетчей придуманных и снятых за две копейки.</td>
+					<td>Набор сцен придуманных и снятых за две копейки.</td>
 				</tr>
 				<tr>
 					<td>Дивный новый мир (2020)</td>
@@ -1598,9 +1621,9 @@ table tr:nth-child(even) td{background-color:#16202d;}
 				</tr>
 			</tbody>
 		</table>
-    </div>
+	</div>
 
-    <div id="content_3"><!--PC игры-->
+	<div id="content_3"><!--PC игры-->
 		<h1>PC игры</h1>
 		<table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
 			<thead>
@@ -2616,11 +2639,11 @@ table tr:nth-child(even) td{background-color:#16202d;}
 				</tr>
 			</tbody>
 		</table>
-    </div>
+	</div>
 	
 	<div id="content_4"><!--VR-->
 		<h1>VR</h1>
-        <table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
+		<table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
 			<thead>
 				<tr>
 					<th><b>Название</b></th>
@@ -2633,6 +2656,15 @@ table tr:nth-child(even) td{background-color:#16202d;}
 				</tr>
 			</thead>
 			<tbody>
+				<tr>
+					<td>Metro Awakening (2024)</td>
+					<td>Windows</td>
+					<td>7</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>22.01.25</td>
+					<td>Слишком тесные локации, мало разнообразия. Замороченное управление и местами баги. Лучше бы портанули оригинальную Метро на ВР.</td>
+				</tr>
 				<tr>
 					<td>Resident Evil 4 (2021)</td>
 					<td>Pico</td>
@@ -2816,7 +2848,7 @@ table tr:nth-child(even) td{background-color:#16202d;}
 			</tbody>
 		</table>
 		<div id="sub-desc">* Пройдены на Pico 4.</div>
-    </div>
+	</div>
 	
 	<div id="content_5"><!--PSP-->
 		<h1>PSP игры</h1>
@@ -2924,9 +2956,9 @@ table tr:nth-child(even) td{background-color:#16202d;}
 		</table>
 	
 	
-    </div>
+	</div>
 	
-    <div id="content_6"><!--PS1-->
+	<div id="content_6"><!--PS1-->
 		<h1>PlayStation 1 игры</h1>
 		<table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
 			<thead>
@@ -2976,8 +3008,8 @@ table tr:nth-child(even) td{background-color:#16202d;}
 		</table>
 		<div id="sub-desc">* Пройдены на эмуляторе Duckstation, ePSXe, с горячими сохраненями или на PSP.</div>
 	   
-    </div>
-    <div id="content_7"><!--PS2-->
+	</div>
+	<div id="content_7"><!--PS2-->
 		<h1>PlayStation 2 игры</h1>
 	   	<table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
 			<thead>
@@ -3100,9 +3132,9 @@ table tr:nth-child(even) td{background-color:#16202d;}
 		<div id="sub-desc">* Пройдены на эмуляторе Yuzu.</div>
 	</div>
 	
-    <div id="content_11"><!--Wii-->
+	<div id="content_11"><!--Wii-->
 		<h1>Wii игры</h1>
-        <table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
+		<table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
 			<thead>
 				<tr>
 					<th><b>Название</b></th>
@@ -3133,7 +3165,7 @@ table tr:nth-child(even) td{background-color:#16202d;}
 			</tbody>
 		</table>
 		<div id="sub-desc">* Пройдены на эмуляторе Dolphin, с контроллерами Razer Hydra.</div>
-    </div>
+	</div>
 	
 	<div id="content_12"><!--Денди-->
 		<h1>NES игры</h1>
@@ -3273,7 +3305,7 @@ table tr:nth-child(even) td{background-color:#16202d;}
 			</tbody>
 		</table>
 		<div id="sub-desc">* Пройдены на эмуляторе RetroArch (FCEUmm) на Miyoo Mini Plus, FCEUX на ПК или NesterJ на PSP, с горячими сохраненями и перемоткой.</div>
-    </div>
+	</div>
 	
 	<div id="content_13"><!--Sega Mega Drive-->
 		<h1>Sega Mega Drive игры</h1>
@@ -3442,6 +3474,41 @@ table tr:nth-child(even) td{background-color:#16202d;}
 	</div>
 	
 </div>
-<div style="color:#626366; padding-top:10px">Обновления сверху</div>
+<div style="color:#626366; padding-top:10px">Обновления сверху | <a href="#" onclick="ExportCSV(); return false;">Экспорт</a></div>
+<script type="text/javascript">
+function ExportCSV() {
+	const table = document.getElementById('table');
+	let csvContent = '';
+
+	// Заголовки таблицы
+	const headers = table.querySelectorAll('thead th');
+	const headerRow = Array.from(headers).map(th => `"${th.textContent.trim()}"`).join(';');
+	csvContent += headerRow + '\n';
+
+	// Строки таблицы
+	const rows = table.querySelectorAll('tbody tr');
+	rows.forEach(row => {
+		const cells = row.querySelectorAll('td');
+		const rowContent = Array.from(cells).map(td => {
+			let value = td.textContent.trim();
+			// Заменяем точку на запятую для оценок
+			if (value.length >= 1 && value.length <= 3) {
+				value = value.replace('.', ',');
+			}
+			return `"${value}"`;
+		}).join(';');
+		csvContent += rowContent + '\n';
+	});
+
+	// Сохранение CSV
+	const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+	const url = URL.createObjectURL(blob);
+	const a = document.createElement('a');
+	a.href = url;
+	a.download = document.querySelector('h1').textContent.trim() + '.csv';
+	a.click();
+	URL.revokeObjectURL(url);
+}
+</script>
 </body>
 </html>

@@ -54,6 +54,7 @@ function ts_getInnerText(el) {
 function ts_resortTable(lnk) {
     // get the span
     var span;
+	//var ARROW;
     for (var ci=0;ci<lnk.childNodes.length;ci++) {
         if (lnk.childNodes[ci].tagName && lnk.childNodes[ci].tagName.toLowerCase() == 'span') span = lnk.childNodes[ci];
     }
@@ -65,6 +66,10 @@ function ts_resortTable(lnk) {
     // Work out a type for the column
     if (table.rows.length <= 1) return;
     var itm = ts_getInnerText(table.rows[1].cells[column]);
+    if (!itm || itm.trim() === "") {
+        console.warn("Item is empty in column:", column);
+        itm = "0"; // Заменяем пустое значение на "0"
+    }
     sortfn = ts_sort_caseinsensitive;
     if (itm.match(/^\d\d[\/-]\d\d[\/-]\d\d\d\d$/)) sortfn = ts_sort_date;
     if (itm.match(/^\d\d[\/-]\d\d[\/-]\d\d$/)) sortfn = ts_sort_date;
@@ -103,7 +108,7 @@ function ts_resortTable(lnk) {
         }
     }
         
-    span.innerHTML = ARROW;
+    //span.innerHTML = ARROW;
 }
 
 function getParent(el, pTagName) {
