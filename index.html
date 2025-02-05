@@ -133,6 +133,20 @@ a{color:#626366; text-decoration:none;}
 			</thead>
 			<tbody>
 				<tr>
+					<td>Человек-паук: Нет пути домой (2021)</td>
+					<td>1</td>
+					<td>1</td>
+					<td>05.02.25</td>
+					<td>Глупая, детская комедия, редкостное дерьмо. Настолько испортить серию это надо уметь. Купился на сцену с гоблином, на которую случайно наткнулся.</td>
+				</tr>
+				<tr>
+					<td>Человек-паук 3: Враг в отражении (2007)</td>
+					<td>8.7</td>
+					<td>1</td>
+					<td>03.02.25</td>
+					<td></td>
+				</tr>
+				<tr>
 					<td>Тихое место (2018)</td>
 					<td>7</td>
 					<td>1</td>
@@ -3491,12 +3505,36 @@ a{color:#626366; text-decoration:none;}
 <div style="color:#626366; padding-top:10px">Обновления сверху | <a href="#" onclick="ExportCSV(); return false;">Экспорт</a></div>
 <script type="text/javascript">
 function ExportCSV() {
-	const table = document.getElementById('table');
-	let csvContent = '';
+	// Ищем первую видимую таблицу
+	const tables = document.querySelectorAll('table');
+	let table = null;
+	for (let i = 0; i < tables.length; i++) {
+		if (tables[i].offsetParent !== null) {
+			table = tables[i];
+			break;
+		}
+	}
+
+	if (!table) {
+		alert('Нет видимой таблицы для экспорта!');
+		return;
+	}
+
+	// Ищем первый видимый h1
+	const headers = document.querySelectorAll('h1');
+	let visibleH1 = 'export';
+	for (let i = 0; i < headers.length; i++) {
+		if (headers[i].offsetParent !== null) {
+			visibleH1 = headers[i].textContent.trim();
+			break;
+		}
+	}
+
+	let csvContent = '\uFEFF'; // Добавляем BOM
 
 	// Заголовки таблицы
-	const headers = table.querySelectorAll('thead th');
-	const headerRow = Array.from(headers).map(th => `"${th.textContent.trim()}"`).join(';');
+	const tableHeaders = table.querySelectorAll('thead th');
+	const headerRow = Array.from(tableHeaders).map(th => `"${th.textContent.trim()}"`).join(';');
 	csvContent += headerRow + '\n';
 
 	// Строки таблицы
@@ -3519,7 +3557,7 @@ function ExportCSV() {
 	const url = URL.createObjectURL(blob);
 	const a = document.createElement('a');
 	a.href = url;
-	a.download = document.querySelector('h1').textContent.trim() + '.csv';
+	a.download = visibleH1 + '.csv';
 	a.click();
 	URL.revokeObjectURL(url);
 }
