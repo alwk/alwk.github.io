@@ -1,253 +1,3573 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Генератор билетов Лото</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="description" content="оценки фильмов, сериалов и игр"/>
+<title>Оценки фильмов, сериалов и игр</title>
 <style type="text/css">
-body{margin:0; padding:0; font-family:arial, helvetica, sans-serif; font-size:14px;}
+body {font:12px Verdana, Arial; margin:25px; background-color:#1b2838; color:#acb2b8; text-align: center;}
 
-#wrapper{
-	padding:20px;
-	text-align:center;
+table a{text-decoration:none; color:#d4d4d4; font-weight:bold;}
+
+table {max-width:960px; border-left:1px solid #17354c; border-top:1px solid #17354c; border-bottom:none; margin:0 auto; background-color: #0d141c;}
+table th{background-color:#214b6b; text-align:left; color:#d4d4d4; border:1px solid #17354c; border-right:none; padding:10px; text-align:center; white-space:nowrap;}
+table td{border-bottom:1px solid #17354c; border-right:1px solid #17354c; padding:6px 4px;}
+table tr:nth-child(even) td{background-color:#16202d;}
+
+.desc,.asc,.sort{width:5px; height:8px; display:inline-block;background-repeat: no-repeat; padding:0px 5px 0 0;}
+	
+.desc{background-image:url(images/desc.gif)}
+.asc{background-image:url(images/asc.gif);}
+.sort{background-image:url(images/sort.gif);}
+
+#sub-desc{color:#384959; padding-top:10px;}
+
+.tabs {width: 100%; padding: 0px; margin: 30px auto 0 auto;}
+.tabs>input { display:none; }
+.tabs>div { display: none;
 }
-
-.button{
+.tabs>label {
 	display: inline-block;
-	outline: 0;
-	border: none;
-	padding: 8px 18px;
-	border-radius: 6px;
-	color: white;
-	background: linear-gradient(180deg, #4B91F7 0%, #367AF6 100%);
+	padding: 7px;
+	margin: 0 -5px -1px 0;
+	text-align: center;
+	color: #d4d4d4;
+	border: 1px solid #2b526d;
+	background-color: #376d91;
+	cursor: pointer;
 	user-select: none;
-	-webkit-user-select: none;
-	touch-action: manipulation;
-	cursor:pointer;
 }
-.button:hover, button:active{background: linear-gradient(180deg, #2461ba 0%, #2461ba 100%);}
-
-table{border-collapse: collapse;}
-table tr{background-color:#f9fafb;}
-table td{background-color:rgba(255, 255, 255, 0.4); border:1px solid #dddddd; min-width:17px;}
-table th{border:1px solid #dddddd;}
-table{margin:10px auto; text-align:center;}
-td, th{padding:10px; vertical-align: top;}
-table tr:nth-child(odd) td{background-color:rgba(255, 255, 255, 0.3);}
-
-#ticket{margin:0 auto; display:flex; justify-content:center; align-items:center; width:1116px; height:437px; background-image:url(ticket.jpg); }
-#numbers{display:inline-block; padding:10px; margin-right:60px; border-radius:15px; background-color:rgba(0, 0, 0, 0.2);}
-#title{
-	font-size: 20px;
-	text-shadow: 2px 2px 5px black;
-	color: white;
+.tabs>label:hover {
+	background-color: #4685af;
+}
+.tabs>input:checked + label {
+	color:#d4d4d4;
+	border:1px solid #17354c;
+	border-bottom:1px solid #17354c;
+	background-color: #2b5470;
 }
 
-*:focus {outline: none;}
+#tab_1:checked ~ #content_1,
+#tab_2:checked ~ #content_2,
+#tab_3:checked ~ #content_3,
+#tab_4:checked ~ #content_4,
+#tab_5:checked ~ #content_5,
+#tab_6:checked ~ #content_6,
+#tab_7:checked ~ #content_7,
+#tab_8:checked ~ #content_8,
+#tab_9:checked ~ #content_9,
+#tab_10:checked ~ #content_10,
+#tab_11:checked ~ #content_11,
+#tab_12:checked ~ #content_12,
+#tab_13:checked ~ #content_13,
+#tab_14:checked ~ #content_14,
+#tab_15:checked ~ #content_15,
+#tab_16:checked ~ #content_16 {display: block;}
 
-#tickets{width:800px; height:200px;}
+a{color:#626366; text-decoration:none;}
 </style>
-<script src="html2canvas.min.js"></script>
-<script type="text/javascript">
-let numsOut = '';
-let numsOut2 = '';
-let counter = 0;
-
-function shuffle(array) {
-  let currentIndex = array.length,  randomIndex;
-  while (currentIndex > 0) {
-	randomIndex = Math.floor(Math.random() * currentIndex);
-	currentIndex--;
-	[array[currentIndex], array[randomIndex]] = [
-	  array[randomIndex], array[currentIndex]];
-  }
-
-  return array;
-}
-
-function getRandomInt(min, max) {
-	min = Math.ceil(min);
-	max = Math.floor(max);
-	return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-function done() {
-	document.getElementById('numbers').innerHTML = '<div id="title" onclick="changeTitle()">Билет *нажми меня*</div>';
-
-	let Matr = [];
-	for (let i = 0; i < 9; i++) {
-	
-		let Nums = [];
-		for (let j = 1; j < 11; j++)
-			Nums.push(j + (i * 10) - 1);
-			
-		// 0 заменяем на 10, в первом десятке
-		if (i == 0) //{
-			//console.log(Nums);
-			Nums[0] = 10;
-			//console.log(Nums);
-		//}
-			
-		// Заменяем случайным образом случайное число на 90, последнем десятке
-		if (i == 8) //{
-			//console.log(Nums);
-			if (getRandomInt(0, 1) == 1)
-				Nums[getRandomInt(0, 10)] = 90;
-			//console.log(Nums);
-		//}
-		
-		// Мешаем
-		shuffle(Nums);
-		shuffle(Nums);
-		
-		// Отрезаем 4 цифры
-		for (let j = 1; j < 5; j++)
-			Nums.splice(0, 1);
-			
-		Matr.push(Nums);	
-	}
-	
-	let Matr2 = [];
-	
-	// Вращаем назад
-	for (let i = 0; i < 6; i++) {
-		let Nums = [];
-		for (let j = 0; j < 9; j++) 
-			Nums.push(Matr[j][i]);
-		Matr2.push(Nums);
-	}
-	
-	let numsStr = '';
-	numsOut = '';
-	let numsStr2 = '';
-	numsOut2 = '';
-	
-	for (let i = 0; i < 6; i++) {
-		if (i == 3) {
-			numsStr2 = numsStr;
-			numsOut2 = numsOut;
-			numsStr = '';
-			numsOut = '';
-		}
-		numsStr += '<tr>';
-		
-		// В строке всего 5 символов, генерируем случайные 5 индексов из 10
-		let ExcludeCells = [];
-		for (let m = 0; m < 9; m++)
-			ExcludeCells.push(m);
-
-		// Удаляем лишние
-		shuffle(ExcludeCells);
-		shuffle(ExcludeCells);
-		for (let m = 0; m < 5; m++)
-			ExcludeCells.splice(0, 1);
-			
-		let Rand = 0;
-		
-		for (let j = 0; j < 9; j++) {
-			if (ExcludeCells.indexOf(j) == -1) {
-				numsStr += '<td>' + Matr2[i][j] + '</td>';
-				numsOut += Matr2[i][j] + ' ';
-			} else {
-				numsStr += '<td></td>';
-				//numsOut += '-;';
-			}
-		}
-		numsStr += '</tr>';
-	}
-	document.getElementById('numbers').innerHTML += '<table><tbody>' + numsStr2 + '</tbody></table>';
-	document.getElementById('numbers').innerHTML += '<table><tbody>' + numsStr + '</tbody></table>';
-}
-
-function DownloadTicket() {
-	let ticketElement = document.getElementById('ticket');
-	let ticketTitle = document.getElementById('title').innerText.replaceAll('*', '').replaceAll(' ', '_');
-
-	html2canvas(ticketElement).then(canvas => {
-		let link = document.createElement('a');
-		link.download = ticketTitle + '.png';
-		link.href = canvas.toDataURL();
-		link.click();
-	}).catch(err => {
-		//console.error('Error generating image:', err);
-	});
-}
-
-function done2() {
-	done();
-	counter++;
-	document.getElementById('title').innerHTML = 'Билет ' + counter;
-	document.getElementById('tickets').value += 'Билет ' + counter + ', цифры: ' + numsOut + numsOut2 + '\n';
-	if (document.getElementById('autoDownload').checked)
-		DownloadTicket();
-}
-
-function changeTitle() {
-	let name = prompt('Название:', '');
-	if (name != null && name.trim() != '') {
-		document.getElementById('title').innerHTML = 'Билет ' + name;
-		document.getElementById('tickets').value += 'Билет ' + name + ', цифры: ' + numsOut + numsOut2 + '\n';
-		if (!isNaN(name))
-			counter = parseInt(name, 10);
-	}
-}
-
-function CopyToClipboard(str) {
-	navigator.clipboard.writeText(str).then(function() {
-	}, function(err) {
-	});
-}
-
-function ExcludeTickets() {
-	let Numbers = prompt('Введите цифры через запятую:');
-	if (Numbers === null || Numbers.trim() == '') return;
-	
-	Numbers = Numbers.trim().split(',');
-	console.log(Numbers);
-
-	let List = document.getElementById('tickets').value.trim().split(/\n/);
-    for (let i = List.length - 1; i >= 0; i--) {
-		let Found = false;
-		
-		for (let j = 0; j < Numbers.length; j++)
-			if (List[i].indexOf(' ' + Numbers[j].trim() + ' ') != -1) {
-				//console.log('Удален билет: ' + List[i])
-				List.splice(i, 1);
-				break;
-			}
-	}
-	
-	document.getElementById('tickets').value = List.join('\n') + '\n';
-}
-
-function ChangeBG() {
-    let url = prompt('Введите прямую ссылку на картинку:');
-    if (url) {
-        document.getElementById("ticket").style.backgroundImage = 'url(' + url + ')';
-    }
-}
-
-document.addEventListener('DOMContentLoaded', function(){
-	done();
-});
-</script>
+<script src="sorttable.js"></script>
 </head>
 <body>
-	<div id="wrapper">
-		<div id="ticket">
-			<div id="numbers"></div>
-		</div>
-		<div class="button" onclick="done()">Новый билет</div>
-		<div class="button" onclick="done2()">Следующий 1,2,3...</div>
-		<div class="button" onclick="DownloadTicket()">Скачать</div>
-		<input type="checkbox" id="autoDownload" name="autoDownload" checked />
-		<label for="autoDownload">Авто-скачивание</label>
-		<div class="button" onclick="ChangeBG()">Фон</div>
-		<br><br>
-		<textarea id="tickets" placeholder="Билеты" autocomplete="off"></textarea><br><br>
-<div class="button" onclick="document.getElementById('tickets').value=''">Очистить</div>
-		<div class="button" onclick="CopyToClipboard(document.getElementById('tickets').value)">Скопировать</div>
-		<div class="button" onclick="ExcludeTickets()">Исключить с невыпавшими числами</div>
+<div class="tabs">
+	<input type="radio" name="inset" value="" id="tab_1" checked>
+	<label for="tab_1">Фильмы</label>
+	
+	<input type="radio" name="inset" value="" id="tab_2">
+	<label for="tab_2">Сериалы</label>
+
+	<input type="radio" name="inset" value="" id="tab_3">
+	<label for="tab_3">PC</label>
+	
+	<input type="radio" name="inset" value="" id="tab_4">
+	<label for="tab_4">VR</label>
+
+	<input type="radio" name="inset" value="" id="tab_5">
+	<label for="tab_5">PSP</label>
+	
+	<input type="radio" name="inset" value="" id="tab_6">
+	<label for="tab_6">PSX</label>
+
+	<input type="radio" name="inset" value="" id="tab_7">
+	<label for="tab_7">PS2</label>
+	
+	<input type="radio" name="inset" value="" id="tab_8">
+	<label for="tab_8">PS3</label>
+	
+	<input type="radio" name="inset" value="" id="tab_9">
+	<label for="tab_9">PS4</label>
+	
+	<input type="radio" name="inset" value="" id="tab_10">
+	<label for="tab_10">Switch</label>
+
+	<input type="radio" name="inset" value="" id="tab_11">
+	<label for="tab_11">Wii</label>
+	
+	<input type="radio" name="inset" value="" id="tab_12">
+	<label for="tab_12">NES</label>
+	
+	<input type="radio" name="inset" value="" id="tab_13">
+	<label for="tab_13">SMD</label>
+	
+	<input type="radio" name="inset" value="" id="tab_14">
+	<label for="tab_14">GB</label>
+	
+	<input type="radio" name="inset" value="" id="tab_15">
+	<label for="tab_15">GBA</label>
+	
+	<input type="radio" name="inset" value="" id="tab_16">
+	<label for="tab_16">Книги</label>
+
+	
+	<div id="content_1"><!--Фильмы-->
+		<h1>Фильмы</h1>
+		<table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
+			<thead>
+				<tr>
+					<th><b>Название</b></th>
+					<th><b>Оценка</b></th>
+					<th><b>Просмотрено раз</b></th>
+					<th class="nosort"><b>Дата просмотра</b></th>
+					<th class="nosort"><b>Комментарий</b></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Босиком по мостовой (2005)</td>
+					<td>7</td>
+					<td>1</td>
+					<td>09.02.25</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Человек-паук: Нет пути домой (2021)</td>
+					<td>1</td>
+					<td>1</td>
+					<td>05.02.25</td>
+					<td>Глупая, детская комедия, редкостное дерьмо. Настолько испортить серию это надо уметь. Купился на сцену с гоблином, на которую случайно наткнулся.</td>
+				</tr>
+				<tr>
+					<td>Человек-паук 3: Враг в отражении (2007)</td>
+					<td>8.7</td>
+					<td>1</td>
+					<td>03.02.25</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Тихое место (2018)</td>
+					<td>7</td>
+					<td>1</td>
+					<td>29.01.25</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Куб (1997)</td>
+					<td>5</td>
+					<td>1</td>
+					<td>28.01.25</td>
+					<td>Необычно, но ничего интересного.</td>
+				</tr>
+				<tr>
+					<td>Тринадцатый этаж (1999)</td>
+					<td>8</td>
+					<td>2</td>
+					<td>18.01.25</td>
+					<td>Интересные идеи, необычно.</td>
+				</tr>
+				<tr>
+					<td>Ускорение (2024)</td>
+					<td>8.7</td>
+					<td>1</td>
+					<td>17.01.25</td>
+					<td>Интересный, необычный сюжет. Есть нестандартные повороты.</td>
+				</tr>
+				<tr>
+					<td>Остров Изгоев (2023)</td>
+					<td>8.5</td>
+					<td>1</td>
+					<td>15.01.25</td>
+					<td>Интересный, но тяжелый сюжет. Местами слишком жизненно.</td>
+				</tr>
+				<tr>
+					<td>Чрево (2010)</td>
+					<td>7.5</td>
+					<td>1</td>
+					<td>06.01.25</td>
+					<td>Необычно.</td>
+				</tr>
+				<tr>
+					<td>Рубеж выживания (2023)</td>
+					<td>8</td>
+					<td>1</td>
+					<td>03.01.25</td>
+					<td>Простенько, но с неожиданностями, тема сюжета не раскрыта. Слабая концовка, но в целом интересно.</td>
+				</tr>
+				<tr>
+					<td>Ох уж эта наука! (1985)</td>
+					<td>6</td>
+					<td>1</td>
+					<td>29.12.24</td>
+					<td>Слишком по детски, тема мало раскрывается. Сериал несравнимо лучше.</td>
+				</tr>
+				<tr>
+					<td>Апокалипсис Z: Начало конца (2024)</td>
+					<td>7.5</td>
+					<td>1</td>
+					<td>03.12.24</td>
+					<td>Мало раскрыта тема выживания и хорошая концовка не помешала бы.</td>
+				</tr>
+				<tr>
+					<td>Ларс и настоящая девушка (2007)</td>
+					<td>8</td>
+					<td>1</td>
+					<td>11.11.24</td>
+					<td>Не хватает медицинской части и суровости.</td>
+				</tr>
+				<tr>
+					<td>Платформа 2 (2024)</td>
+					<td>5</td>
+					<td>1</td>
+					<td>03.11.24</td>
+					<td>Попытка очернить первую часть, сюжет оглупел.</td>
+				</tr>
+				<tr>
+					<td>Чужой: Ромул (2024)</td>
+					<td>4</td>
+					<td>1</td>
+					<td>22.10.24</td>
+					<td>Актёры слишком молодые. Новый, никчёмный сюжет, сборный из прошлых частей. </td>
+				</tr>
+				<tr>
+					<td>Прометей (2012)</td>
+					<td>9</td>
+					<td>2</td>
+					<td>15.09.24</td>
+					<td>Интересная сюжетная ветка с ИИ, местами глуповато. В целом необычно, интересно, но идеи не раскрыли.</td>
+				</tr>
+				<tr>
+					<td>Человек-паук 2 (2004)</td>
+					<td>8.5</td>
+					<td>2</td>
+					<td>12.09.24</td>
+					<td>Местами слишком наивно.</td>
+				</tr>
+				<tr>
+					<td>Человек-паук (2002)</td>
+					<td>9</td>
+					<td>2</td>
+					<td>10.09.24</td>
+					<td>Местами наивно, местами жизненно. Злодей оказался не таким уж и злодеем, с возрастом немного иначе всё выглядит.</td>
+				</tr>
+				<tr>
+					<td>Пассажиры (2016)</td>
+					<td>7</td>
+					<td>2</td>
+					<td>21.06.24</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Чужой 4 - Воскрешение (1997)</td>
+					<td>3.5</td>
+					<td>1</td>
+					<td>25.05.24</td>
+					<td>Всё тоже самое, сюжет высосан из пальца, разбавили комедией.</td>
+				</tr>
+				<tr>
+					<td>Чужой 3 (1992)</td>
+					<td>8</td>
+					<td>1</td>
+					<td>22.04.24</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Терминатор 2 (1991)</td>
+					<td>9</td>
+					<td>1</td>
+					<td>21.04.24</td>
+					<td>Посмотрел ремастер, сделан хорошо. Хорошее кино, но мало событий.</td>
+				</tr>
+				<tr>
+					<td>Чужие (1986)</td>
+					<td>7.5</td>
+					<td>1</td>
+					<td>20.04.24</td>
+					<td>Хорошие декорации в сравнении с первой и интересная концовка.</td>
+				</tr>
+				<tr>
+					<td>Чужой (1979)</td>
+					<td>6</td>
+					<td>1</td>
+					<td>16.04.24</td>
+					<td>Местами наивно, местами глуповато. Часть декораций показывается слишком обрывисто и кусками.</td>
+				</tr>
+				<tr>
+					<td>Оставь мир позади (2023)</td>
+					<td>7</td>
+					<td>1</td>
+					<td>02.03.24</td>
+					<td>Большое вступление, заканчивается на самом интересном. Нет развязки.</td>
+				</tr>
+				<tr>
+					<td>Я видел дьявола (2010)</td>
+					<td>6</td>
+					<td>1</td>
+					<td>25.01.24</td>
+					<td>Местами наивно и глуповато.</td>
+				</tr>
+				<tr>
+					<td>Пила 10 (2023)</td>
+					<td>4</td>
+					<td>1</td>
+					<td>11.01.24</td>
+					<td>Дешевые декорации, странный сюжет.</td>
+				</tr>
+				<tr>
+					<td>Зодиак (2007)</td>
+					<td>7</td>
+					<td>1</td>
+					<td>10.12.23</td>
+					<td>Интересная история, но не хватает деталей и последовательности.</td>
+				</tr>
+				<tr>
+					<td>Тетрис (2023)</td>
+					<td>2</td>
+					<td>1</td>
+					<td>03.11.23</td>
+					<td>Клоунада в перемешку с пропагандой.</td>
+				</tr>
+				<tr>
+					<td>Нефариус (2023)</td>
+					<td>6</td>
+					<td>1</td>
+					<td>01.11.23</td>
+					<td>Смотрится интересно, но событий маловато.</td>
+				</tr>
+				<tr>
+					<td>Другие (2001)</td>
+					<td>4</td>
+					<td>1</td>
+					<td>26.09.23</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Бегущий по лезвию 2049 (2017)</td>
+					<td>6</td>
+					<td>1</td>
+					<td>18.09.23</td>
+					<td>Снято хорошо, но сюжет крайне слабый.</td>
+				</tr>
+				<tr>
+					<td>Война токов (2017)</td>
+					<td>7.5</td>
+					<td>1</td>
+					<td>09.09.23</td>
+					<td>Интересная история, но не хватает плавных, сюжетных переходов.</td>
+				</tr>
+				<tr>
+					<td>Вышка (2022)</td>
+					<td>7.5</td>
+					<td>1</td>
+					<td>06.09.23</td>
+					<td>Просто, но атмосферно. Высота хороша передана, ладошки потеют. Есть нестандартный поворот.</td>
+				</tr>
+				<tr>
+					<td>На краю (2022)</td>
+					<td>6</td>
+					<td>1</td>
+					<td>23.08.23</td>
+					<td>Бюджетно, атмосфера высота местами передана. Мужиков показали по повесточке - абьюзерами и насильниками.</td>
+				</tr>
+				<tr>
+					<td>Обитель зла: Остров смерти (2023)</td>
+					<td>4</td>
+					<td>1</td>
+					<td>27.07.23</td>
+					<td>Примитивный сюжет, примитивные сцены, чисто для фанатов серии увидеть любимых героев.</td>
+				</tr>
+				<tr>
+					<td>Искусительница (2022)</td>
+					<td>7</td>
+					<td>1</td>
+					<td>17.07.23</td>
+					<td>Тему ИИ можно было раскрыть глубже и концовка слабенькая.</td>
+				</tr>
+				<tr>
+					<td>Изгой (2000)</td>
+					<td>9</td>
+					<td>2</td>
+					<td>14.07.23</td>
+					<td>Интересная история, но можно было чуть больше раскрыть тему выживания на острове.</td>
+				</tr>
+				<tr>
+					<td>Заводной апельсин (1971)</td>
+					<td>0</td>
+					<td>1</td>
+					<td>01.06.23</td>
+					<td>Что-то очень странное.</td>
+				</tr>
+				<tr>
+					<td>Как Витька Чеснок вёз Лёху Штыря в дом инвалидов (2017)</td>
+					<td>5</td>
+					<td>1</td>
+					<td>10.05.23</td>
+					<td>Без бандитов и гоп культуры было бы куда интереснее. Тему моральных терзаний и одиночества можно было раскрыть лучше.</td>
+				</tr>
+				<tr>
+					<td>М3ган (2022)</td>
+					<td>7.5</td>
+					<td>1</td>
+					<td>26.04.23</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Терминатор (1984)</td>
+					<td>8.5</td>
+					<td>1</td>
+					<td>25.04.23</td>
+					<td>Интересная история, но не хватает деталей. Экшен сцен тоже хотелось бы побольше.</td>
+				</tr>
+				<tr>
+					<td>Обитель зла 4: Жизнь после смерти (2010)</td>
+					<td>6.5</td>
+					<td>1</td>
+					<td>18.04.23</td>
+					<td>Слабенько, почти ничего не было, чисто для фанатов серии. В 3D спецэффекты хорошие, но отвлекают от сути.</td>
+				</tr>
+				<tr>
+					<td>Обитель зла 3 (2007)</td>
+					<td>6.5</td>
+					<td>1</td>
+					<td>16.04.23</td>
+					<td>Слабенько, почти ничего не было, чисто для фанатов серии.</td>
+				</tr>
+				<tr>
+					<td>Молчание ягнят (1990)</td>
+					<td>5.5</td>
+					<td>1</td>
+					<td>13.03.23</td>
+					<td>Слабенько, ничего особенного.</td>
+				</tr>
+				<tr>
+					<td>Кит (2022)</td>
+					<td>4</td>
+					<td>1</td>
+					<td>09.03.23</td>
+					<td>Слабый сюжет, не интересный конец.</td>
+				</tr>
+				<tr>
+					<td>Не смотрите наверх (2021)</td>
+					<td>8.5</td>
+					<td>1</td>
+					<td>31.01.23</td>
+					<td>Очень серьёзное кино, про современное общество, капитализм и его проблемы.</td>
+				</tr>
+				<tr>
+					<td>Маяк (2019)</td>
+					<td>7.5</td>
+					<td>1</td>
+					<td>27.01.23</td>
+					<td>Ожидалось одно, но к сожалению ушло все в другое русло. Снято хорошо, душевно, но развязка слабая.</td>
+				</tr>
+				<tr>
+					<td>Падение Луны (2022)</td>
+					<td>6.5</td>
+					<td>1</td>
+					<td>11.01.23</td>
+					<td>Сюжет трешовый, но киноряд компенсирует.</td>
+				</tr>
+				<tr>
+					<td>Гарри Поттер и Дары Смерти - часть 2 (2011)</td>
+					<td>9</td>
+					<td>2</td>
+					<td>10.01.23</td>
+					<td>На удивление достойное завершение сюжета и развязка пробелов, жалко что на этом все закончилось. Гарри Поттер все-таки оказался сыном Снейпа.</td>
+				</tr>
+				<tr>
+					<td>Гарри Поттер и Дары Смерти (2010)</td>
+					<td>7</td>
+					<td>2</td>
+					<td>07.01.23</td>
+					<td>Кругом сюжетные противоречия, смысл происходящего не логичен, но смотрится без отвращения.</td>
+				</tr>
+				<tr>
+					<td>Гарри Поттер и Принц-полукровка (2009)</td>
+					<td>7.5</td>
+					<td>2</td>
+					<td>05.01.23</td>
+					<td>Сюжет и дальше высасывают из пальца. В конце используется трюк, пропирающий на эмоции.</td>
+				</tr>
+				<tr>
+					<td>Гарри Поттер и Орден Феникса (2007)</td>
+					<td>7</td>
+					<td>2</td>
+					<td>03.01.23</td>
+					<td>Сюжет ради сюжета, высосанный из пальца.</td>
+				</tr>
+				<tr>
+					<td>Гарри Поттер и Кубок Огня (2005)</td>
+					<td>8.5</td>
+					<td>2</td>
+					<td>02.01.23</td>
+					<td>Хорошая сказка про подростков, но не хватает чего-то захватывающего.</td>
+				</tr>
+				<tr>
+					<td>Рубикон (2022)</td>
+					<td>7.5</td>
+					<td>1</td>
+					<td>24.12.2022</td>
+					<td>Сюжет слабоват, не хватает чего-то.</td>
+				</tr>
+				<tr>
+					<td>Мотылёк (2017)</td>
+					<td>8.5</td>
+					<td>1</td>
+					<td>05.12.22</td>
+					<td>Фильм о преданности двух людей, оказавшихся в схожей ситуации.</td>
+				</tr>
+				<tr>
+					<td>Мумия: Гробница Императора Драконов (2008)</td>
+					<td>5.5</td>
+					<td>1</td>
+					<td>04.12.22</td>
+					<td>Сюжет глуповат и слабо продуман, но местами есть эффектные сцены.</td>
+				</tr>
+				<tr>
+					<td>Последний день Земли (2020)</td>
+					<td>1</td>
+					<td>1</td>
+					<td>03.12.22</td>
+					<td>Бал за летающие машины и красивую планету на фоне, в остальном редкостный, несвязный мусор.</td>
+				</tr>
+				<tr>
+					<td>Треугольник (2009)</td>
+					<td>6</td>
+					<td>1</td>
+					<td>01.12.22</td>
+					<td>В конце не хватает равязки, без нее не понятно до конца чего хотел сказать автор. Основная идея получается в том, что обстоятельства приводят к одним и тем же последствиям.</td>
+				</tr>
+				<tr>
+					<td>Оцепеневшие от страха (2018)</td>
+					<td>4</td>
+					<td>1</td>
+					<td>04.09.22</td>
+					<td>Ничего не понятно, набор выдуманной хрени, хотя начальную тему можно было бы успешно развить.</td>
+				</tr>
+				<tr>
+					<td>Американский психопат (2000)</td>
+					<td>4</td>
+					<td>1</td>
+					<td>27.08.22</td>
+					<td>То ли комедия, то ли триллер. Про что фильм и зачем он не особо понятно, ну хоть концовка нестандартная.</td>
+				</tr>
+				<tr>
+					<td>Как убили Джона Кеннеди (2021)</td>
+					<td>7</td>
+					<td>1</td>
+					<td>24.08.22</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Мизери (1990)</td>
+					<td>7</td>
+					<td>1</td>
+					<td>14.08.22</td>
+					<td>Подача несерьезная, а сюжет ничего.</td>
+				</tr>
+				<tr>
+					<td>Виновный (2021)</td>
+					<td>7.5</td>
+					<td>1</td>
+					<td>29.07.22</td>
+					<td>Без клоунады было бы лучше и не хватает сцен.</td>
+				</tr>
+				<tr>
+					<td>Главный герой (2021)</td>
+					<td>5</td>
+					<td>1</td>
+					<td>11.07.22</td>
+					<td>Слабенько и слишком по-детстки. В одном месте может пробрать на эмоции.</td>
+				</tr>
+				<tr>
+					<td>Крио (2022)</td>
+					<td>6.5</td>
+					<td>1</td>
+					<td>03.06.22</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Смерть на Ниле (2022)</td>
+					<td>6</td>
+					<td>1</td>
+					<td>30.05.22</td>
+					<td>Сюжет местами глуповат, излишний пафос и недостаточная серьезность.</td>
+				</tr>
+				<tr>
+					<td>Анчартед: На картах не значится (2022)</td>
+					<td>7</td>
+					<td>1</td>
+					<td>17.05.22</td>
+					<td>Незамысловатое кино про приключения. Местами зрелищная картинка.</td>
+				</tr>
+				<tr>
+					<td>1+1: Голливудская история (2018)</td>
+					<td>7</td>
+					<td>1</td>
+					<td>06.05.22</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Чёрный ящик (2021)</td>
+					<td>6.5</td>
+					<td>1</td>
+					<td>25.04.22</td>
+					<td>История интересная, но повествование не дотягивает.</td>
+				</tr>
+				<tr>
+					<td>Война будущего (2021)</td>
+					<td>1</td>
+					<td>1</td>
+					<td>09.02.22</td>
+					<td>Алогичная, примитивная муть.</td>
+				</tr>
+				<tr>
+					<td>Гарри Поттер и узник Азкабана (2004)</td>
+					<td>7</td>
+					<td>1</td>
+					<td>09.01.22</td>
+					<td>Слабая история и местами высосанная из пальца.</td>
+				</tr>
+				<tr>
+					<td>Гарри Поттер 20 лет спустя: Возвращение в Хогвартс (2022)</td>
+					<td>3.5</td>
+					<td>1</td>
+					<td>04.01.22</td>
+					<td>Халтура, сделанная на скорую руку.</td>
+				</tr>
+				<tr>
+					<td>Гарри Поттер и Тайная комната (2002)</td>
+					<td>10</td>
+					<td>1</td>
+					<td>02.01.22</td>
+					<td>Добрая, душевная сказка.</td>
+				</tr>
+				<tr>
+					<td>Гарри Поттер и философский камень (2001)</td>
+					<td>10</td>
+					<td>1</td>
+					<td>31.12.21</td>
+					<td>Хорошая, интересная сказка.</td>
+				</tr>
+				<tr>
+					<td>Обитель зла: Раккун-Сити (2021)</td>
+					<td>7</td>
+					<td>1</td>
+					<td>25.11.21</td>
+					<td>Кино по сути состоит из эпизодов из игр. Для фильма не хватает связанности. Зайдет только фанатам серии, как дополнительные материалы по вселенной. Бюджетненько.</td>
+				</tr>
+				<tr>
+					<td>Финч (2021)</td>
+					<td>5</td>
+					<td>1</td>
+					<td>15.11.21</td>
+					<td>Десткое кино, разбавленное драмой, но какого-либо смысла нет.</td>
+				</tr>
+				<tr>
+					<td>Аннигиляция (2018)</td>
+					<td>6.5</td>
+					<td>1</td>
+					<td>01.11.21</td>
+					<td>Смотрится без отторжения, но идея слабая и особо нераскрытая.</td>
+				</tr>
+				<tr>
+					<td>Поворот не туда: Наследие (2021)</td>
+					<td>6.5</td>
+					<td>1</td>
+					<td>09.09.21</td>
+					<td>Бюджетно, трешово.</td>
+				</tr>
+				<tr>
+					<td>Заклятие 2 (2016)</td>
+					<td>6.5</td>
+					<td>1</td>
+					<td>23.07.21</td>
+					<td>Пару сцен с муражками было, но в целом конечно пустышка.</td>
+				</tr>
+				<tr>
+					<td>Опасные секреты (2019)</td>
+					<td>7.5</td>
+					<td>1</td>
+					<td>22.07.21</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Субурбикон (2017)</td>
+					<td>3</td>
+					<td>1</td>
+					<td>20.07.21</td>
+					<td>Полная чушь, бредовый глупый сюжет.</td>
+				</tr>
+				<tr>
+					<td>Пила (2004)</td>
+					<td>9</td>
+					<td>2</td>
+					<td>22.06.21</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Проксима (2019)</td>
+					<td>7.5</td>
+					<td>1</td>
+					<td>14.06.21</td>
+					<td>Не хватает развязки, без неё картина не полная.</td>
+				</tr>
+				<tr>
+					<td>Переводчики (2019)</td>
+					<td>3.5</td>
+					<td>1</td>
+					<td>07.06.21</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Завод (2018)</td>
+					<td>8.5</td>
+					<td>1</td>
+					<td>03.06.21</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Лучше не бывает (1997)</td>
+					<td>6</td>
+					<td>1</td>
+					<td>01.06.21</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Ведьма (2015)</td>
+					<td>6.5</td>
+					<td>1</td>
+					<td>25.05.21</td>
+					<td>Ждешь какой-то развязки, а её нет.</td>
+				</tr>
+				<tr>
+					<td>Хищные воды: Западня (2020)</td>
+					<td>7.5</td>
+					<td>1</td>
+					<td>17.05.21</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Никто (2021)</td>
+					<td>5</td>
+					<td>1</td>
+					<td>11.05.21</td>
+					<td>Пустой глупый боевик, но снят хорошо.</td>
+				</tr>
+				<tr>
+					<td>Глубокое погружение (2020)</td>
+					<td>7.5</td>
+					<td>1</td>
+					<td>04.05.21</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Шкатулка проклятия (2012)</td>
+					<td>3</td>
+					<td>1</td>
+					<td>30.03.21</td>
+					<td>Больше похоже на комедию, чем на ужастик.</td>
+				</tr>
+				<tr>
+					<td>Оно приходит ночью (2017)</td>
+					<td>6.5</td>
+					<td>1</td>
+					<td>24.03.21</td>
+					<td>Идеи нет, окружение скудное, фильм не раскрывается. Пустышка бюджетная, хоть и хорошо снятая.</td>
+				</tr>
+				<tr>
+					<td>Игра Джералда (2017)</td>
+					<td>5</td>
+					<td>1</td>
+					<td>20.03.21</td>
+					<td>Анонсируют одно, подсовывают другое.</td>
+				</tr>
+				<tr>
+					<td>Дорогие товарищи (2020)</td>
+					<td>4</td>
+					<td>1</td>
+					<td>16.03.21</td>
+					<td>Дешевая чернуха, с элементами пропаганды.</td>
+				</tr>
+				<tr>
+					<td>Обитель проклятых (2014)</td>
+					<td>8</td>
+					<td>1</td>
+					<td>01.03.21</td>
+					<td>Интересная идея, сюжет. Без любовной истории было бы наверное еще лучше.</td>
+				</tr>
+				<tr>
+					<td>Искатели могил (2010)</td>
+					<td>2</td>
+					<td>1</td>
+					<td>24.02.21</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Дитя робота (2019)</td>
+					<td>8.5</td>
+					<td>1</td>
+					<td>21.02.21</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Побег из Претории (2020)</td>
+					<td>6</td>
+					<td>1</td>
+					<td>08.02.21</td>
+					<td>Ни идеи, ничего.</td>
+				</tr>
+				<tr>
+					<td>Пролетая над гнездом кукушки (1975)</td>
+					<td>5</td>
+					<td>1</td>
+					<td>02.02.21</td>
+					<td>Набор сцен, без общего смысла и без идеи.</td>
+				</tr>
+				<tr>
+					<td>Ледяной капкан (2020)</td>
+					<td>7</td>
+					<td>1</td>
+					<td>25.01.21</td>
+					<td>Поведение конечно глупое у героев.</td>
+				</tr>
+				<tr>
+					<td>Спутник (2020)</td>
+					<td>2.5</td>
+					<td>1</td>
+					<td>09.01.21</td>
+					<td>Сюжет глупый, плохой, непроработанный. Актеры сыграли плохо. Муть.</td>
+				</tr>
+				<tr>
+					<td>Тёмное наследие (2020)</td>
+					<td>7.5</td>
+					<td>1</td>
+					<td>09.01.21</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Под водой (2020)</td>
+					<td>8</td>
+					<td>1</td>
+					<td>06.01.21</td>
+					<td>Не дожали, но в целом неплохо.</td>
+				</tr>
+				<tr>
+					<td>Один дома (1990)</td>
+					<td>9</td>
+					<td>1</td>
+					<td>31.12.20</td>
+					<td>Хороший, добрый, семейный фильм.</td>
+				</tr>
+				<tr>
+					<td>Человек-невидимка (2020)</td>
+					<td>6</td>
+					<td>1</td>
+					<td>29.12.20</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Борат 2 (2020)</td>
+					<td>7</td>
+					<td>1</td>
+					<td>18.11.20</td>
+					<td>Местами смешно, но в целом слабее первой части.</td>
+				</tr>
+				<tr>
+					<td>Пиноккио (2019)</td>
+					<td>8</td>
+					<td>1</td>
+					<td>09.11.20</td>
+					<td>Хорошая добрая сказка.</td>
+				</tr>
+				<tr>
+					<td>Трамбо (2015)</td>
+					<td>7</td>
+					<td>1</td>
+					<td>02.11.20</td>
+					<td>Ждешь одного развития событий, а происходит что-то другое, мелкое.</td>
+				</tr>
+				<tr>
+					<td>К звёздам (2019)</td>
+					<td>6</td>
+					<td>1</td>
+					<td>23.08.20</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Мой создатель (2020)</td>
+					<td>5.5</td>
+					<td>1</td>
+					<td>19.08.20</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Гипноз (2004)</td>
+					<td>6</td>
+					<td>1</td>
+					<td>20.05.20</td>
+					<td>Много бреда, но конец ничего.</td>
+				</tr>
+				<tr>
+					<td>Платформа (2019)</td>
+					<td>7.5</td>
+					<td>1</td>
+					<td>19.04.20</td>
+					<td>Необычный сюжет, философский, но до конца понять идею автора довольно сложно.</td>
+				</tr>
+				<tr>
+					<td>Стекло (2019)</td>
+					<td>3.5</td>
+					<td>1</td>
+					<td>18.03.20</td>
+					<td>Полная чушь.</td>
+				</tr>
+				<tr>
+					<td>Невидимка (2000)</td>
+					<td>8.5</td>
+					<td>1</td>
+					<td>15.03.20</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Терминатор: Тёмные судьбы (2019)</td>
+					<td>7.5</td>
+					<td>1</td>
+					<td>03.03.20</td>
+					<td>Комейдинойсть и наивностость портит погружение, но видимо на сегодняшний день без этого уже никак.</td>
+				</tr>
+				<tr>
+					<td>Лобстер (2015)</td>
+					<td>6</td>
+					<td>1</td>
+					<td>24.02.20</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Дом, который построил Джек (2018)</td>
+					<td>8</td>
+					<td>1</td>
+					<td>22.02.20</td>
+					<td>Необычно.</td>
+				</tr>
+				<tr>
+					<td>Паразиты (2019)</td>
+					<td>6.5</td>
+					<td>1</td>
+					<td>06.02.20</td>
+					<td>Местами комедийное повествование портит картину. Тема раскрыта слабо.</td>
+				</tr>
+				<tr>
+					<td>Заражение (2011)</td>
+					<td>7</td>
+					<td>1</td>
+					<td>29.01.20</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Джокер (2019)</td>
+					<td>7.5</td>
+					<td>1</td>
+					<td>11.01.20</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Не в себе (2018)</td>
+					<td>8</td>
+					<td>1</td>
+					<td>08.01.20</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Скорость (1994)</td>
+					<td>8</td>
+					<td>1</td>
+					<td>06.12.19</td>
+					<td>Местами наивно выглядит.</td>
+				</tr>
+				<tr>
+					<td>Сосед (2018)</td>
+					<td>7</td>
+					<td>1</td>
+					<td>22.11.19</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Выстрел в пустоту (2017)</td>
+					<td>7</td>
+					<td>1</td>
+					<td>05.11.19</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Затерянные во льдах (2018)</td>
+					<td>6</td>
+					<td>1</td>
+					<td>08.10.19</td>
+					<td>Ни смысла, ни идеи, ничего, набор нескольких сцен.</td>
+				</tr>
+				<tr>
+					<td>Медовый месяц (2018)</td>
+					<td>6</td>
+					<td>1</td>
+					<td>08.09.19</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Атлантида (2017)</td>
+					<td>7</td>
+					<td>1</td>
+					<td>23.08.19</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Дитя человеческое (2006)</td>
+					<td>3</td>
+					<td>1</td>
+					<td>02.07.19</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Кто я (2014)</td>
+					<td>5</td>
+					<td>1</td>
+					<td>21.05.19</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Веном (2018)</td>
+					<td>6.5</td>
+					<td>1</td>
+					<td>20.05.19</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Астрал: Глава 2 (2013)</td>
+					<td>7</td>
+					<td>1</td>
+					<td>12.05.19</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Человек на Луне (2018)</td>
+					<td>8</td>
+					<td>1</td>
+					<td>03.05.19</td>
+					<td></td>
+				</tr>		
+				<tr>
+					<td>Хорошие люди (2013)</td>
+					<td>6</td>
+					<td>1</td>
+					<td>27.01.19</td>
+					<td></td>
+				</tr>				
+				<tr>
+					<td>Лангольеры (1995)</td>
+					<td>6.3</td>
+					<td>1</td>
+					<td>29.08.18</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>НЛО (2018)</td>
+					<td>6</td>
+					<td>1</td>
+					<td>23.08.18</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Джунгли (2017)</td>
+					<td>8</td>
+					<td>1</td>
+					<td>16.07.18</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>VOLDEMORT: Origins of the Heir (2018)</td>
+					<td>3</td>
+					<td>1</td>
+					<td>09.06.18</td>
+					<td>Глупый отвратительный сюжет.</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
+	
+	<div id="content_2"><!--Сериалы-->
+		<h1>Сериалы</h1>
+		<table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
+			<thead>
+				<tr>
+					<th><b>Название</b></th>
+					<th><b>Оценка</b></th>
+					<th><b>Просмотрено раз</b></th>
+					<th width="120px" class="nosort"><b>Дата просмотра</b></th>
+					<th class="nosort"><b>Комментарий</b></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Сквозь снег (2020)</td>
+					<td>5</td>
+					<td>1</td>
+					<td>26.01.25</td>
+					<td>Фильм куда интереснее, сериал слабенький и много бреда. Просмотрены все 4 сезона.</td>
+				</tr>
+				<tr>
+					<td>Бункер / Укрытие (2023)</td>
+					<td>6.5</td>
+					<td>1</td>
+					<td>20.01.25</td>
+					<td>Местами нудно, местами интересно. Просмотрено два сезона.</td>
+				</tr>
+				<tr>
+					<td>Конец детства (2015)</td>
+					<td>8.5</td>
+					<td>1</td>
+					<td>01.12.24</td>
+					<td>Необычный, нестандартный сюжет, с интересными идеями.</td>
+				</tr>
+				<tr>
+					<td>Извне (2022)</td>
+					<td>6</td>
+					<td>1</td>
+					<td>26.11.24</td>
+					<td>Много вопросов, мало ответов, местами глупо, местами интересно. Финал второго сезона слабый. Третий сезон слабый, не о чем, серии ради серий. Просмотрено 3 сезона.</td>
+				</tr>
+				<tr>
+					<td>Настоящий детектив (2014)</td>
+					<td>8</td>
+					<td>1</td>
+					<td>27.08.24</td>
+					<td>Третий сезон смотрится интересно, на одном дыхании, держит интригу. Хорошее погружение. Развязка слабее, чем ожидаешь. Четвертый сезон странный, мистика, второстепенные неинтересные темы, концовка ничего. Четверный сезон на 5.</td>
+				</tr>
+				<tr>
+					<td>Некст (2020)</td>
+					<td>7</td>
+					<td>1</td>
+					<td>17.05.24</td>
+					<td>Местами не хватает серьезности, тема ии раскрыта слабо, но в целом интересно.</td>
+				</tr>
+				<tr>
+					<td>Fallout (2024)</td>
+					<td>5</td>
+					<td>1</td>
+					<td>03.05.24</td>
+					<td>Много условностей, слабый сюжет, местами комедия. Красивая главная героиня. Для разнообразия пойдет.</td>
+				</tr>
+				<tr>
+					<td>Колония (2016)</td>
+					<td>7</td>
+					<td>1</td>
+					<td>15.04.24</td>
+					<td>Местами показывает суровую реальность. Тема вторжения раскрыта слабо.</td>
+				</tr>
+				<tr>
+					<td>Загрузка (2020)</td>
+					<td>6.8</td>
+					<td>1</td>
+					<td>23.02.24</td>
+					<td>Третий сезон на 3, высосан из пальца. В целом идея интересная.</td>
+				</tr>
+				<tr>
+					<td>Лада Голд (2023)</td>
+					<td>7</td>
+					<td>1</td>
+					<td>08.02.24</td>
+					<td>Необычно, местами не хватает серьёзности. Держит интригу и случается такое, чего не ожидаешь.</td>
+				</tr>
+				<tr>
+					<td>Разделение (2022)</td>
+					<td>6</td>
+					<td>1</td>
+					<td>23.01.24</td>
+					<td>Необычно, держит интригу. Развязка слабая.</td>
+				</tr>
+				<tr>
+					<td>Маяк 23 (2023)</td>
+					<td>2</td>
+					<td>0</td>
+					<td>13.01.24</td>
+					<td>Просмотрено 3 серии. Не пойми о чём, сплошная вода.</td>
+				</tr>
+				<tr>
+					<td>Орвилл (2017)</td>
+					<td>7.2</td>
+					<td>1</td>
+					<td>30.11.23</td>
+					<td>Есть интересные глубокомысленные серии, но не все. Третий сезон на 5.5.</td>
+				</tr>
+				<tr>
+					<td>История российских компьютерных игр (2023)</td>
+					<td>5</td>
+					<td>1</td>
+					<td>23.10.23</td>
+					<td>Местами интересно, местами не очень.</td>
+				</tr>
+				<tr>
+					<td>Захваченный рейс (2023)</td>
+					<td>6.5</td>
+					<td>1</td>
+					<td>10.10.23</td>
+					<td>Серьёзности сюжету не хватает, местами клоунада.</td>
+				</tr>
+				<tr>
+					<td>Взращённые волками (2020)</td>
+					<td>2</td>
+					<td>1</td>
+					<td>03.10.23</td>
+					<td>Прыгают с темы на тему, ни одна тема не раскрыта.</td>
+				</tr>
+				<tr>
+					<td>Терминатор: Хроники Сары Коннор (2008)</td>
+					<td>9</td>
+					<td>1</td>
+					<td>20.08.23</td>
+					<td>Интересный сюжет, хорошо показаы искусственные интеллекты. Снято фанатами для фанатов вселенной терминатора. Жаль, что сериал не продлили.</td>
+				</tr>
+				<tr>
+					<td>11.22.63 (2016)</td>
+					<td>8</td>
+					<td>1</td>
+					<td>12.07.23</td>
+					<td>Интересно, но тема не достаточно раскрыта и мало интриг.</td>
+				</tr>
+				<tr>
+					<td>Черное зеркало (2011)</td>
+					<td>8</td>
+					<td>1</td>
+					<td>24.06.23</td>
+					<td>Некоторые серии крутые.</td>
+				</tr>
+				<tr>
+					<td>Мир! Дружба! Жвачка! (2020)</td>
+					<td>8</td>
+					<td>1</td>
+					<td>04.06.21</td>
+					<td>Хороший сериал про 90ые, но могли бы больше тем охватить. Третий сезон слабый.</td>
+				</tr>
+				<tr>
+					<td>Ваша честь (2020)</td>
+					<td>8</td>
+					<td>1</td>
+					<td>10.06.23</td>
+					<td>В меру захватывающе, многовато совпадений.</td>
+				</tr>
+				<tr>
+					<td>Уэнздей (2022)</td>
+					<td>4</td>
+					<td>1</td>
+					<td>12.05.23</td>
+					<td>Много пафоса, повесточка, ничего особенного или захватывающего. Калька на Гарри Поттера. Просмотрен 1 сезон.</td>
+				</tr>
+				<tr>
+					<td>Территория (2020)</td>
+					<td>7</td>
+					<td>1</td>
+					<td>05.04.23</td>
+					<td>Сюжет захватывает, но не продуман. Завязок много, а развязок мало.</td>
+				</tr>
+				<tr>
+					<td>Выжить после (2013)</td>
+					<td>6</td>
+					<td>1</td>
+					<td>15.02.23</td>
+					<td>Сюжет глупенький, актеры играют слабо, но кому нравится выживание в апокалипсисе может понравится. В целом пойдет, если нечего смотреть.</td>
+				</tr>
+				<tr>
+					<td>Одни из нас (2023)</td>
+					<td>7</td>
+					<td>1</td>
+					<td>15.02.23</td>
+					<td>Мало событий, меньше чем в игре, при этом повторение почти 1 в 1. Раскрыто слабо.</td>
+				</tr>
+				<tr>
+					<td>Периферийные устройства (2022)</td>
+					<td>1</td>
+					<td>0</td>
+					<td>23.12.22</td>
+					<td>Идея вроде интересная, про видеоигры в нейрошлеме, но в остальном полная муть.</td>
+				</tr>
+				<tr>
+					<td>Игра на выживание (2020)</td>
+					<td>9</td>
+					<td>1</td>
+					<td>27.11.22</td>
+					<td>Сериал насыщен событиями. Второй сезон гораздо слабее, на 7.5, актеры переигрывают.</td>
+				</tr>
+				<tr>
+					<td>Мир Дикого Запада (2016)</td>
+					<td>8</td>
+					<td>1</td>
+					<td>10.11.22</td>
+					<td>Местами сумбурно, местами недосказано, но захватывающего. Третий и четвертый сезон слабоватым конечно оказался, сюжет не продуман. Закончился слабенько.</td>
+				</tr>
+				<tr>
+					<td>Обитель зла (2022)</td>
+					<td>6</td>
+					<td>1</td>
+					<td>10.09.22</td>
+					<td>Первые 5 серий фигня, но потом все интереснее и интереснее. Вескер, на удивление, отыгран вполне ничего. Финал вообще крутой.</td>
+				</tr>
+				<tr>
+					<td>Лучше звоните Солу (2015)</td>
+					<td>7.5</td>
+					<td>1</td>
+					<td>19.08.22</td>
+					<td>Концовка слабая.</td>
+				</tr>
+				<tr>
+					<td>Северные воды (2021)</td>
+					<td>7</td>
+					<td>1</td>
+					<td>19.07.22</td>
+					<td>Местами интересно и атмосферно.</td>
+				</tr>
+				<tr>
+					<td>Обитель зла (2022)</td>
+					<td>1</td>
+					<td>0</td>
+					<td>15.07.22</td>
+					<td>Просмотрена 1 серия. Мусор и паразитизм на имени.</td>
+				</tr>
+				<tr>
+					<td>Озарк (2017)</td>
+					<td>7</td>
+					<td>1</td>
+					<td>30.05.22</td>
+					<td>Просмотрен 4 сезона. Местами конечно имеет бред, но в целом следить за сюжетом интересно.</td>
+				</tr>
+				<tr>
+					<td>Зов ада (2021)</td>
+					<td>1</td>
+					<td>1</td>
+					<td>27.05.22</td>
+					<td>Просмотрена 1 серия. Муть.</td>
+				</tr>
+				<tr>
+					<td>Светлячок (2002)</td>
+					<td>1</td>
+					<td>1</td>
+					<td>26.05.22</td>
+					<td>Просмотрена 1 серия. Муть.</td>
+				</tr>
+				<tr>
+					<td>Мне плевать кто вы (2021)</td>
+					<td>5</td>
+					<td>1</td>
+					<td>15.05.22</td>
+					<td>Просмотрен 1 сезон. Простой, незамысловатый сериал под чаёк. Актеры переигрывают.</td>
+				</tr>
+				<tr>
+					<td>Триггер (2018)</td>
+					<td>3</td>
+					<td>0</td>
+					<td>10.02.22</td>
+					<td>Просмотрено 3 серии. Много пафоса и сказачности, но истории и терапия вполне могут быть реальными.</td>
+				</tr>
+				<tr>
+					<td>Возвращение домой (2018)</td>
+					<td>1</td>
+					<td>1</td>
+					<td>18.01.22</td>
+					<td>Просмотрена 1 серия. Уныло, скучно и без событий.</td>
+				</tr>
+				<tr>
+					<td>Вторжение (2021)</td>
+					<td>2.5</td>
+					<td>1</td>
+					<td>07.01.22</td>
+					<td>Просмотрен 1 сезон. Мистика, драма и немного фантастики, в целом муть и пустышка.</td>
+				</tr>
+				<tr>
+					<td>Срок (2021)</td>
+					<td>8.5</td>
+					<td>1</td>
+					<td>09.11.21</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Игра в кальмара (2021)</td>
+					<td>8</td>
+					<td>1</td>
+					<td>06.11.21</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Чужой, 40-летний юбилей (2019)</td>
+					<td>3</td>
+					<td>1</td>
+					<td>22.10.21</td>
+					<td>Набор сцен придуманных и снятых за две копейки.</td>
+				</tr>
+				<tr>
+					<td>Дивный новый мир (2020)</td>
+					<td>4</td>
+					<td>1</td>
+					<td>19.10.21</td>
+					<td>Даже не пытались придумать что-то, раскрыть тему как-то. Пустышка.</td>
+				</tr>
+				<tr>
+					<td>Топи (2021)</td>
+					<td>9</td>
+					<td>1</td>
+					<td>17.09.21</td>
+					<td>Захватывающий сериал.</td>
+				</tr>
+				<tr>
+					<td>Колл-центр (2020)</td>
+					<td>8</td>
+					<td>1</td>
+					<td>13.08.21</td>
+					<td>Если бы ловушки были бы более приближены к реальности, было бы гораздо лучше. Местами актеры играют не очень тоже. Сюжет интересный, уникальный.</td>
+				</tr>
+				<tr>
+					<td>В её глазах (2021)</td>
+					<td>7.5</td>
+					<td>1</td>
+					<td>10.08.21</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Обитель зла: Бесконечная тьма (2021)</td>
+					<td>1</td>
+					<td>1</td>
+					<td>27.07.21</td>
+					<td>Ни сюжета, ни постановки, вообще ничего, кроме паразитизма на серии.</td>
+				</tr>
+				<tr>
+					<td>Декстер (2006)</td>
+					<td>1</td>
+					<td>0</td>
+					<td>03.08.21</td>
+					<td>Посмотрел 2 серии.</td>
+				</tr>
+				<tr>
+					<td>Остаться в живых (2004)</td>
+					<td>7.5</td>
+					<td>1</td>
+					<td>17.07.21</td>
+					<td>Первые 3 сезона на 8ку, много событий, много завязок, но мало развязок. Последние 3 сезона не очень, наука плавно перешла в магию. Концовка ничего.</td>
+				</tr>
+				<tr>
+					<td>Игрушка для взрослых (2021)</td>
+					<td>2</td>
+					<td>1</td>
+					<td>30.05.21</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Метод (2015)</td>
+					<td>8</td>
+					<td>1</td>
+					<td>15.05.21</td>
+					<td>Просмотрен два сезон. Могло быть и лучше, если бы не было супергеройства, все было бы более серьезно, без чудес и более реалистично. Совпадения местами глупые. Первая серия тоже глупая.</td>
+				</tr>
+				<tr>
+					<td>Дес (2020)</td>
+					<td>8</td>
+					<td>1</td>
+					<td>29.03.21</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Мандалорец (2019)</td>
+					<td>4</td>
+					<td>0</td>
+					<td>08.02.21</td>
+					<td>Посмотрел 1 серию. Детский сериал.</td>
+				</tr>
+				<tr>
+					<td>Ривердэйл (2017)</td>
+					<td>2</td>
+					<td>0</td>
+					<td>03.02.21</td>
+					<td>Посмотрел 1 серию. Муть про любовь и подростков.</td>
+				</tr>
+				<tr>
+					<td>Противостояние (2020)</td>
+					<td>3</td>
+					<td>0</td>
+					<td>01.02.21</td>
+					<td>Посмотрел 3 серии. Мистика, муть и чушь.</td>
+				</tr>
+				<tr>
+					<td>Ты (2018)</td>
+					<td>6.5</td>
+					<td>1</td>
+					<td>27.01.21</td>
+					<td>Посмотрел 2 сезона. Чем дальше, тем трешовее.</td>
+				</tr>
+				<tr>
+					<td>Выжить (2020)</td>
+					<td>7.5</td>
+					<td>1</td>
+					<td>12.12.20</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Вдали (2020)</td>
+					<td>8</td>
+					<td>1</td>
+					<td>25.10.20</td>
+					<td>Про космос мало всего, скорее просто про жизнь космонафтов. Не хватает экшена.</td>
+				</tr>
+				<tr>
+					<td>Защищая Джейкоба (2020)</td>
+					<td>8</td>
+					<td>1</td>
+					<td>25.09.20</td>
+					<td>Раскрывается только в конце, но зато как.</td>
+				</tr>
+				<tr>
+					<td>Захват (2020)</td>
+					<td>7.5</td>
+					<td>1</td>
+					<td>08.09.20</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Охотник за разумом (2017)</td>
+					<td>6.8</td>
+					<td>1</td>
+					<td>05.08.20</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Родина (2011)</td>
+					<td>8.5</td>
+					<td>1</td>
+					<td>28.04.20</td>
+					<td>Постоянное развитие и подстройка под текущую мировую ситуацию. Некоторые сезоны скучные, а некоторые очень захватывающие.</td>
+				</tr>
+				<tr>
+					<td>Миссис Флетчер (2019)</td>
+					<td>8</td>
+					<td>1</td>
+					<td>02.03.20</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Война миров (BBC) (2019)</td>
+					<td>5</td>
+					<td>1</td>
+					<td>22.02.20</td>
+					<td>Сюжет крайне слабый, ни идеи, ничего, всё вбухали в картинку, а толку от этого мало.</td>
+				</tr>
+				<tr>
+					<td>Проект "Синяя книга" (2019)</td>
+					<td>5</td>
+					<td>0</td>
+					<td>15.02.20</td>
+					<td>Дропнуто после 2x1 серии. Начиналось интересно, но потом пошёл конвеер высосанный из пальца.</td>
+				</tr>
+				<tr>
+					<td>13 причин почему (2017)</td>
+					<td>3</td>
+					<td>0</td>
+					<td>07.02.20</td>
+					<td>Дропнуто после 4 серии. Пустышка, детская мазня.</td>
+				</tr>
+				<tr>
+					<td>Стартап (2016)</td>
+					<td>5</td>
+					<td>0</td>
+					<td>13.01.20</td>
+					<td>Дропнуто после 6 серии. Пустышка, сюжет бредовый.</td>
+				</tr>
+				<tr>
+					<td>Любовь, смерть и роботы (2019)</td>
+					<td>6.5</td>
+					<td>1</td>
+					<td>04.01.20</td>
+					<td>В некоторых сериях есть необычные идеи, но в целом ничего интересного.</td>
+				</tr>
+				<tr>
+					<td>Война миров (Fox) (2019)</td>
+					<td>8</td>
+					<td>1</td>
+					<td>04.12.19</td>
+					<td>Выживание, инопланетяне, местами трагический. Финал необычный, загадочный.</td>
+				</tr>
+				<tr>
+					<td>Происхождение (2018)</td>
+					<td>6.5</td>
+					<td>1</td>
+					<td>05.11.19</td>
+					<td>Красивые декорации.</td>
+				</tr>
+				<tr>
+					<td>Prison Break (2005)</td>
+					<td>8.5</td>
+					<td>4</td>
+					<td>07.07.19</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>ОА (2016)</td>
+					<td>5.5</td>
+					<td>1</td>
+					<td>19.05.19</td>
+					<td>Много чуши. Дропнул после 1 сезона.</td>
+				</tr>	
+				<tr>
+					<td>Марс (2016)</td>
+					<td>6.5</td>
+					<td>1</td>
+					<td>10.05.19</td>
+					<td></td>
+				</tr>	
+				<tr>
+					<td>Побег из тюрьмы Даннемора (2018)</td>
+					<td>7.5</td>
+					<td>1</td>
+					<td>28.01.19</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Оранжевый - хит сезона (2013)</td>
+					<td>7.5</td>
+					<td>1</td>
+					<td>17.08.18</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Американцы (2013)</td>
+					<td>9</td>
+					<td>1</td>
+					<td>02.06.18</td>
+					<td>Атмосферный, хорошо снят, отличная актерская игра и интересный сюжет.</td>
+				</tr>
+				<tr>
+					<td>Мотель Бейтса (2013)</td>
+					<td>7.5</td>
+					<td>1</td>
+					<td>26.04.17</td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div id="content_3"><!--PC игры-->
+		<h1>PC игры</h1>
+		<table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
+			<thead>
+				<tr>
+					<th><b>Название</b></th>
+					<th><b>Оценка</b></th>
+					<th><b>Статус</b></th>
+					<th><b>Пройдено раз</b></th>
+					<th class="nosort"><b>Дата прохождения</b></th>
+					<th class="nosort"><b>Комментарий</b></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Until Dawn (2024)</td>
+					<td>8</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>12.01.25</td>
+					<td>Интересная история, но мало геймплея. Джош и Мэтт погибли. После просмотренных летсплеев, на выходе игры, уже не так интересно было играть, многое помнил.</td>
+				</tr>
+				<tr>
+					<td>VLADiK BRUTAL (2024)</td>
+					<td>8.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>04.01.25</td>
+					<td>Геймплей в целом приятный, разнообразный, стрельба не идеальная, но хорошая. Дают поездить на машинах. Врагов многовато. Понравились боссы вертолёты, чувствуется мощь схватки. Локации интересные, разнообразные, есть в российском стиле, в стиле халвы, метро и сталкера. Приятная графика. До ААА не хватает совсем немного: большей проработки npc, некоторых уровней, типа поезда и более медленного геймплея.</td>
+				</tr>
+				<tr>
+					<td>Silent Hill 2 (2024)</td>
+					<td>4</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>19.11.24</td>
+					<td>Бесконечные поиски иголки в стоге сена, бесконечные толпы однообразных врагов, отвратительные звуки, 1/3 загадок интересные, остальные либо сложные, либо душные. Сюжет отвратительный, противный, каша. Сделано бюджетно, хоть графика и хорошая. Нет геймплейного баланса и игрока бесконечно душат. Излишне затянутая.</td>
+				</tr>
+				<tr>
+					<td>Dino Crisis (2000)</td>
+					<td>6.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>25.08.24</td>
+					<td>Местами захватывает, местами изматывает. Загадок много, некоторые излишне сложные. Мало стрельбы и патронов, боссов особо не было. Слишком перегруженная деталями, которые запутывают. Локации интересные, атмосферные. Движок сильно скакнул вперёд, в сравнении с Resident Evil.</td>
+				</tr>
+				<tr>
+					<td>Watch Dogs (2014)</td>
+					<td>8</td>
+					<td>Пройдено</td>
+					<td>2</td>
+					<td>21.08.24</td>
+					<td>Приятный геймплей, отличный стелс, хорошая графика. Есть баги: тихий звук, автодоведение на мыши и анимация плаща быстрая. Дополнение "Bad Blood" пройдено 27.01.25, простенькое, короткое, оценка 7.</td>
+				</tr>
+				<tr>
+					<td>Still Wakes the Deep (2024)</td>
+					<td>6</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>22.06.24</td>
+					<td>Хоррора мало, скорее приключение на корабле. Враги странные, сюжет слабенький, озвучка плохая, диалоги затянутые, скучные. Окружение в целом интересное, но раскрыто не до конца.</td>
+				</tr>
+				<tr>
+					<td>Phantom Fury (2023)</td>
+					<td>7</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>13.06.24</td>
+					<td>Много разнообразного геймплея, игра умеет удивлять, интересные локации, проработано много деталей, море интерактива, но слишком много врагов и не всегда понятно, что делать и куда идти. Местами излишняя сложность. Стрельба средняя. Излишне затянутая, раза в 2 минимум. В 16 главе босс был слишком сложным и включил читы. Дизайн местами излишне пиксельный, хотя в целом вроде обычная. Разработчики очень талантливые, вполне могут сделать серьезную ААА игру.</td>
+				</tr>
+				<tr>
+					<td>The Callisto Protocol (2022)</td>
+					<td>3.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>07.05.24</td>
+					<td>Высокая сложность, изматывающая боёвка и стрельба без импакта. Сплошное однообразие. Изредка попадаются красивые места. В конце подрубил читы.</td>
+				</tr>
+				<tr>
+					<td>Spider-Man 2 (2004)</td>
+					<td>4</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>04.05.24</td>
+					<td>Однообразный геймплей, простые механики, слишком детская подача.</td>
+				</tr>
+				<tr>
+					<td>DiRT 3 (2011)</td>
+					<td>8.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>01.05.24</td>
+					<td>Хорошая управляемость, красивые трассы. Пройдено наклонами на геймпаде.</td>
+				</tr>
+				<tr>
+					<td>Alone in the Dark (2024)</td>
+					<td>6</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>30.03.24</td>
+					<td>Плохая боёвка, плохая стрельба. Слишком много загадок. Большая часть геймплея это исследование. Пару загадок посмотрел в гайде.</td>
+				</tr>
+				<tr>
+					<td>Contra Operation Galuga (2024)</td>
+					<td>7</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>21.03.24</td>
+					<td>Сборная солянка из разных частей Contra. Геймплей очень близок к геймплею классики. Довольно короткая. Под конец излишне сложная.</td>
+				</tr>
+				<tr>
+					<td>Lifeless Planet (2014)</td>
+					<td>8</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>27.02.24</td>
+					<td>Необычное, разнообразное окружение. Хорошие головоломки и интересная история.</td>
+				</tr>
+				<tr>
+					<td>Deliver Us Mars (2023)</td>
+					<td>8.7</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>20.02.24</td>
+					<td>Интересные головоломки, красивые локации, хорошая история. Много разнообразного геймплея. Близка к идеалу, но не хватает экшена и продолжительности.</td>
+				</tr>
+				<tr>
+					<td>Harry Potter and the Philosophers Stone (2001)</td>
+					<td>9.3</td>
+					<td>Пройдено</td>
+					<td>9</td>
+					<td>02.01.24</td>
+					<td>Интересное окружение, разнообразный геймплей, секреты, сочные цвета.</td>
+				</tr>
+				<tr>
+					<td>Kona II: Brume (2023)</td>
+					<td>4</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>08.12.23</td>
+					<td>Красивые локации, местами атмосферно. Геймплей довольно однообразный, слишком много загадок и поиска. Прошёл с гайдом, устал бегать туда сюда по большим локациям.</td>
+				</tr>
+				<tr>
+					<td>RoboCop: Rogue City (2023)</td>
+					<td>6</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>08.11.23</td>
+					<td>Довольно однообразный геймплей, тонны неинтересных диалогов. Неплохая графика.</td>
+				</tr>
+				<tr>
+					<td>Alan Wake 2 (2023)</td>
+					<td>1</td>
+					<td>Брошено</td>
+					<td>0</td>
+					<td>29.10.23</td>
+					<td>Вместо геймплея квест, тыкаешься во всё подряд, бродишь везде, в надежде пройти дальше. Враги странные. Отвратительная, душная игра.</td>
+				</tr>
+				<tr>
+					<td>Resident Evil 4 (2007)</td>
+					<td>9</td>
+					<td>Пройдено</td>
+					<td>3</td>
+					<td>19.10.23</td>
+					<td>Приятная стрельба, атмосферные локации, разнообразный геймплей. С каждым разом всё приятнее возвращаться к игру. Дополнение "Другие пути" пройдено 22.10.23, интересное, показывает игру немного с иной стороны, оценка 8.5. Дополнение "Задание Ады" пройдено 22.10.23, довольно простенькое и короткое, оценка 5.</td>
+				</tr>
+				<tr>
+					<td>Code of Honor 3: Desperate Measures (2009)</td>
+					<td>7</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>03.09.23</td>
+					<td>Местами атмосферные локации, разнообразный геймплей. Интересный и технологичный движок.</td>
+				</tr>
+				<tr>
+					<td>Code of Honor 2: Conspiracy Island (2008)</td>
+					<td>6.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>29.08.23</td>
+					<td>Простенький, короткий шутер. Окружение однообразное. В движке есть интересные технологии.</td>
+				</tr>
+				<tr>
+					<td>Dead Island 2 (2023)</td>
+					<td>5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>04.08.23</td>
+					<td>Большинство миссий тупая зачистка толп зомби, без баланса, наслаждаться чем-то невозможно. Локации красивые, но ограниченные. Машины порезали.</td>
+				</tr>
+				<tr>
+					<td>Resident Evil 4 (2023)</td>
+					<td>9</td>
+					<td>Пройдено</td>
+					<td>2</td>
+					<td>25.07.23</td>
+					<td>Локации бледноватые, бедноватые, коридорные. Местами излишне темно. Игра слегка затянутая. Движок развивается, добавили разрушаемость. В целом хороший ремейк оригинала. Со второго раза игра кажется интереснее, второй раз прошел на харде. На харде сложность боссов в самый раз. Дополнение "Другие пути" пройдено 2 раза: 23.09.23 и 30.09.23. Хорошее, простое дополнение на 8.5, первый босс не очень, а потом интересно идет.</td>
+				</tr>
+				<tr>
+					<td>The Last of Us: Part I (2022)</td>
+					<td>8</td>
+					<td>Пройдено</td>
+					<td>2</td>
+					<td>26.06.23</td>
+					<td>Красивые локации, интересный, глубокий сюжет, но геймплей слабенький, ощущаешь себя старым, немочным стариком. Дополнение "Оставшиеся позади" пройдено 28.06.23, в целом ничего, интересное, с хорошей историей, но небольшое.</td>
+				</tr>
+				<tr>
+					<td>Hrot (2023)</td>
+					<td>8</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>29.05.23</td>
+					<td>Геймплей в ретро стиле, с отсылками к СССР, с поиском ключей, секретами. Иногда не знаешь куда идти, но быстро разбираешься. Местами атмосферно и много интересных идей, вроде лошади в противогазе или босса спортивного козла. Разработчики настоящие таланты, которые вложили много сил в игру.</td>
+				</tr>
+				<tr>
+					<td>Resident Evil 2 (2019)</td>
+					<td>9.2</td>
+					<td>Пройдено</td>
+					<td>4</td>
+					<td>01.04.23</td>
+					<td>Шедевр. Игра полностью погружает в свой мир. Проходится на одном дыхании. В VR игра еще круче, даже пугаешься местами, шикарный мод.</td>
+				</tr>
+				<tr>
+					<td>Need for Speed: Underground (2003)</td>
+					<td>8</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>08.03.23</td>
+					<td>Геймплей разнообразный, карты довольно однообразные, но красочные, физика в целом ничего. Под конец соперники слишком быстро ездят.</td>
+				</tr>
+				<tr>
+					<td>Aliens Versus Predator (2000)</td>
+					<td>4</td>
+					<td>Брошено</td>
+					<td>0</td>
+					<td>03.03.23</td>
+					<td>Местами атмосферно, но геймдизайн кривой и не понятно куда идти и что делать.</td>
+				</tr>
+				<tr>
+					<td>Hogwarts Legacy (2023)</td>
+					<td>2</td>
+					<td>Брошено</td>
+					<td>0</td>
+					<td>03.03.23</td>
+					<td>Чистое рпг, с кривыми механиками. Хогвартс лишь отдаленно напоминает себя, некоторыми местами.</td>
+				</tr>
+				<tr>
+					<td>Echoes of the Living Demo (2023)</td>
+					<td>7</td>
+					<td>Брошено</td>
+					<td>0</td>
+					<td>21.02.23</td>
+					<td>Местами похоже на классические резиденты, только послабее. Загадки идут друг за другом, не хватает пострелушек и исследования окружения. Геймплей средний, местами корявый. Ходьба тоже кривая. В целом интересно, но не хватает чекпоинтов.</td>
+				</tr>
+				<tr>
+					<td>Huntdown (2020)</td>
+					<td>5</td>
+					<td>Брошено</td>
+					<td>0</td>
+					<td>19.02.23</td>
+					<td>Интересное, разнообразное окружение, геймплей ничего, но геймдизайн однообразный. Зачистка карты, босс и так по кругу, надоедает и чекпоинтов на фазах босса нет.</td>
+				</tr>
+				<tr>
+					<td>The Quarry (2022)</td>
+					<td>7.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>12.02.23</td>
+					<td>Геймплея стало меньше, в сравнении с прошлой частью, кат-сцены стали более затянутые, все развивается довольно медленно. Не всегда понятна цепочка событий, ведущей к гибели персонажа. Добавили 3 права на ошибку, с возратом. Сюжет интересный, раскрывающийся где-то со второй трети игры. В целом ничего.</td>
+				</tr>
+				<tr>
+					<td>Devastation (2003)</td>
+					<td>7</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>05.02.23</td>
+					<td>Хороший шутер для своего времени, был бы еще лучше без регенерации врагов. Окружения приятные, разнообразные.</td>
+				</tr>
+				<tr>
+					<td>Death in the Water 2 (2023)</td>
+					<td>4</td>
+					<td>Брошено</td>
+					<td>0</td>
+					<td>30.01.23</td>
+					<td>Геймплей скучный, плаваешь по арене, ищешь сундуки, качаешься и все по новой. Механики проработанные, но положение не спасают.</td>
+				</tr>
+				<tr>
+					<td>DiRT Showdown (2012)</td>
+					<td>3</td>
+					<td>Брошено</td>
+					<td>0</td>
+					<td>12.01.23</td>
+					<td>Вместо гонок унылые бои.</td>
+				</tr>
+				<tr>
+					<td>Rage 2 (2019)</td>
+					<td>3</td>
+					<td>Брошено</td>
+					<td>0</td>
+					<td>13.12.22</td>
+					<td>Вместо геймплея прокачка, в самом начале уже не получается проходить, нужно прокачаться. Бал за стрельбу и бал за машины.</td>
+				</tr>
+				<tr>
+					<td>The Dark Pictures Anthology: The Devil in Me (2022)</td>
+					<td>5.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>29.11.22</td>
+					<td>Серия пытается двигаться дальше, появилось больше загадок и дверей с ключами, но экшена как прошлых частях почти нет, геймплей очень медлительный, по сути только бродишь в темноте по узким каридорам. Окружение и сюжет специфический, маникены и маньяки такого рода для нашего игрока не годятся.</td>
+				</tr>
+				<tr>
+					<td>Spider-Man: Miles Morales (2022)</td>
+					<td>6</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>26.11.22</td>
+					<td>Скорее дополнение, слепленное на быструю руку, чем игра. Сюжет детсткий, глупый. Научная фантастика окончательно ушла в магию.</td>
+				</tr>
+				<tr>
+					<td>Uncharted: The Lost Legacy (2022)</td>
+					<td>8.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>07.11.22</td>
+					<td>Впечатления в целом такие же, как от Uncharted 4. Разве, что тема Индии не близка. Схватки с боссами сплошное унижение.</td>
+				</tr>
+				<tr>
+					<td>Uncharted 4: A Thief's End (2022)</td>
+					<td>8.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>31.10.22</td>
+					<td>Много разнообразного геймплея, много разного окружения, интересные катсцены, но есть небольшой перебор с количеством врагом и прыжками по подсвеченным выступам. Игра оставляет позитивные, приятные впечатления.</td>
+				</tr>
+				<tr>
+					<td>Scorn (2022)</td>
+					<td>7</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>20.10.22</td>
+					<td>Не всегда понятно, что делать и куда идти, загадки хорошие, стрельба так себе. Удовольствие не от самой игры, а от прохождения сложных моментов в ней. Окружение интересное, но местами уходит не туда, куда должно.</td>
+				</tr>
+				<tr>
+					<td>Lego Bricktales (2022)</td>
+					<td>6</td>
+					<td>Брошено</td>
+					<td>0</td>
+					<td>06.10.22</td>
+					<td>Задумка интересная, строить что-то, чтобы пройти дальше, но редактор немного хромает. Диалоги раздражают. Попробована демо-версия.</td>
+				</tr>
+				<tr>
+					<td>Driver: San Francisco (2011)</td>
+					<td>3</td>
+					<td>Брошено</td>
+					<td>0</td>
+					<td>25.08.22</td>
+					<td>Физика вождения авто не зашла.</td>
+				</tr>
+				<tr>
+					<td>Stray (2022)</td>
+					<td>6.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>27.07.22</td>
+					<td>Красиво, технологично, но поиски вымораживают.</td>
+				</tr>
+				<tr>
+					<td>Iron Meat Demo (2022)</td>
+					<td>7</td>
+					<td>Пройдено</td>
+					<td>0</td>
+					<td>17.07.22</td>
+					<td>Всего 2 уровня, но выглядит ничего.</td>
+				</tr>
+				<tr>
+					<td>Teenage Mutant Ninja Turtles - Shredder’s Revenge (2022)</td>
+					<td>6.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>09.07.22</td>
+					<td>Однообразно, геймплей не особо приятный, разве что за Эйприл. На средней сложности местами сложно.</td>
+				</tr>
+				<tr>
+					<td>Far Cry 6 (2021)</td>
+					<td>6.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>24.06.22</td>
+					<td>Сплошное однообразие, хоть движок и позволяет многое.</td>
+				</tr>
+				<tr>
+					<td>Watch Dogs: Legion (2020)</td>
+					<td>5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>10.05.22</td>
+					<td>Скучный, поверхностый сюжет. Геймплей в среднем однообразный, небольшое разнообразие даёт игра за паука и полёты на квадрокоптере.</td>
+				</tr>
+				<tr>
+					<td>Detroit: Become Human (2018)</td>
+					<td>9</td>
+					<td>Пройдено</td>
+					<td>2</td>
+					<td>15.04.22</td>
+					<td>Потрясающий, захватывающий сюжет. Игра ставит перед игроком сложные выборы. Активного геймплея хотелось бы побольше. В первом прохождении победили андроиды.</td>
+				</tr>
+				<tr>
+					<td>Medal of Honor: Allied Assault (2002)</td>
+					<td>8</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>12.04.22</td>
+					<td>Разнообразный геймплей, атмосферное разнообразное окружение, приятная стрельба, которая до сих пор не устарела. Игра прошла испытание временем. Местами только врагов многовато и это раздражает.</td>
+				</tr>
+				<tr>
+					<td>Dying Light 2 (2021)</td>
+					<td>2</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>24.03.22</td>
+					<td>Противный, раздражающий геймплей, куча пустых диалогов с пустым выбором. Паркур ничего, но только там где он не вертикальный и продуманный.</td>
+				</tr>
+				<tr>
+					<td>Resident Evil Village (2021)</td>
+					<td>9</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>13.03.22</td>
+					<td>Атмосферная, захватывает, проходится на одном дыхании. Много разного геймплея. Загадки и боссы могли бы быть и посложнее. Местами линейная и скриптовая. Много лабиринтов. Пройдено также дополнение "Тени Розы" 11.04.23, оценка 7.</td>
+				</tr>
+				<tr>
+					<td>Harry Potter and the Chamber of Secrets (2002)</td>
+					<td>9.3</td>
+					<td>Пройдено</td>
+					<td>8</td>
+					<td>09.03.22</td>
+					<td>Интересный сеттинг, разнообразный геймплей, секреты, сочная гамма.</td>
+				</tr>
+				<tr>
+					<td>Resident Evil 1 (1997)</td>
+					<td>8</td>
+					<td>Пройдено</td>
+					<td>3</td>
+					<td>27.02.22</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Как достать соседа (2003)</td>
+					<td>8</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>05.02.22</td>
+					<td>Короткая, но забавная.</td>
+				</tr>
+				<tr>
+					<td>Tomb Raider (2013)</td>
+					<td>9</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>19.01.22</td>
+					<td>Разнообразный, приятный геймплей. Присутствуют различные головоломки. Окружению не хватает красок, всё серое.</td>
+				</tr>
+				<tr>
+					<td>Grand Theft Auto: San Andreas (2004)</td>
+					<td>6.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>23.12.21</td>
+					<td>Излишне затянута, слишком большие локации изматывают. Геймплей вроде и разнообразный, но многие механики кривые.</td>
+				</tr>
+				<tr>
+					<td>Kane and Lynch 2 - Dog Days (2010)</td>
+					<td>0</td>
+					<td>Брошено</td>
+					<td>0</td>
+					<td>21.11.21</td>
+					<td>Играть невозможно, камера трясется, противные блевотные эффекты.</td>
+				</tr>
+				<tr>
+					<td>Kane & Lynch: Dead Men (2007)</td>
+					<td>7</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>17.11.21</td>
+					<td>Хороший шутер для своего времени. ОКР главного героя только немного раздражает и сюжет слабенький.</td>
+				</tr>
+				<tr>
+					<td>The Dark Pictures Anthology - House of Ashes (2021)</td>
+					<td>9</td>
+					<td>Пройдено</td>
+					<td>2</td>
+					<td>30.10.21</td>
+					<td>Очень атмосферно, неплохой сюжет.</td>
+				</tr>
+				<tr>
+					<td>Kena Bridge of Spirits (2021)</td>
+					<td>6</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>22.10.21</td>
+					<td>Местами кривая, местами перебор со сложностью.</td>
+				</tr>
+				<tr>
+					<td>STALKER - Тень Чернобыля (2007)</td>
+					<td>5.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>19.09.21</td>
+					<td>Подземные локации атмосферные, в конце лютый дизбаланс.</td>
+				</tr>
+				<tr>
+					<td>Crysis Warhead (2008)</td>
+					<td>7.5</td>
+					<td>Пройдено</td>
+					<td>2</td>
+					<td>28.08.21</td>
+					<td>Показалось интереснее первой части, разнообразнее. Коротковатая.</td>
+				</tr>
+				<tr>
+					<td>X-Men Origins: Wolverine (2009)</td>
+					<td>7</td>
+					<td>Пройдено</td>
+					<td>2</td>
+					<td>25.08.21</td>
+					<td>Интересные разнообразные баевки, но весь геймплей состоит из них, от этого устаешь. Через какое-то время от бесконечных нажатий начинают болеть кисти. В целом неплохо.</td>
+				</tr>
+				<tr>
+					<td>Cyberpunk 2077 (2020)</td>
+					<td>2</td>
+					<td>Брошено</td>
+					<td>0</td>
+					<td>22.08.21</td>
+					<td>Очень длинные диалоги, с бесполезным, бесмысленным протыкиванием. Навалено интерфейсов, управление неудобное. Бал за окружение. Не игра, а непойми что, геймдизайнеры вообще не понимают, что делают.</td>
+				</tr>
+				<tr>
+					<td>Grand Theft Auto: Vice City (2002)</td>
+					<td>7.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>06.08.21</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Crysis 3 (2013)</td>
+					<td>5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>02.08.21</td>
+					<td>Нудный, скучный.</td>
+				</tr>
+				<tr>
+					<td>Days Gone (2021)</td>
+					<td>3</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>20.06.21</td>
+					<td>Классная графика, сюжет ничего, но в остальном всё плохо. Геймдизайн кривой, задания однообразные, удовольствия от игры никакого. Бесмысленная езда туда сюда, с переодическими унижениями игрока.</td>
+				</tr>
+				<tr>
+					<td>Metro: Last Light (2013)</td>
+					<td>8.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>09.05.21</td>
+					<td>С пропагандой переборщили, атмосфера послабее чем в первой части. Местами геймдизайн страдает, например, не хватает фильтров на схватке с боссом. В целом неплохо.</td>
+				</tr>
+				<tr>
+					<td>Resident Evil 3 (1999)</td>
+					<td>8.5</td>
+					<td>Пройдено</td>
+					<td>2</td>
+					<td>25.04.21</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Teardown (2020)</td>
+					<td>7</td>
+					<td>Брошено</td>
+					<td>1</td>
+					<td>09.02.21</td>
+					<td>Технологичный движок, демонстрирующий безумный уровень разрушений. Задания на время конечно надоедают, хотелось бы чего-то цельного, а не мини-заданий и не на время.</td>
+				</tr>
+				<tr>
+					<td>Clive Barker's Undying (2001)</td>
+					<td>9</td>
+					<td>Пройдено</td>
+					<td>2</td>
+					<td>07.02.21</td>
+					<td>Интересный сеттинг, атмосфера и секреты. Даже спустя столько лет игра умудряется пугать. Одна из лучших игр, что я играл.</td>
+				</tr>
+				<tr>
+					<td>Max Payne 3 (2012)</td>
+					<td>7.2</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>28.01.21</td>
+					<td>Специфическое окружение и однообразный геймплей.</td>
+				</tr>
+				<tr>
+					<td>Half-Life 2: Episode Two (2007)</td>
+					<td>7.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>25.12.20</td>
+					<td>Не хватает экшена.</td>
+				</tr>
+				<tr>
+					<td>Red Faction (2001)</td>
+					<td>6.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>26.11.20</td>
+					<td>Местами выглядит приятно и атмосферно, местами однообразно. Пытались сделать разнообразие геймплея, с помощью транспорта, вышло средненько. В качестве фишки игры также имеется разрушаемость стен, сделано интересно. На уровнях замыкающиеся проходы, из-за чего путаешься. В конце дебильная сложная загадка, с рандомом, пропустил её.</td>
+				</tr>
+				<tr>
+					<td>Little Hope (2020)</td>
+					<td>7</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>07.11.20</td>
+					<td>Скримеры не пугают, в основном нет атмосферы. Сюжет довольно специфический, на любителя. На разок пойдет, но не более того.</td>
+				</tr>
+				<tr>
+					<td>Mafia: Definitive Edition (2020)</td>
+					<td>8.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>28.10.20</td>
+					<td>Обновлённый интересный геймплей, проделана большая работа над ошибками. Старая Mafia в новой обёртке, жалко что нового ничего не добавили, новых миссий каких-то, когда всё знаешь не так интересно играть. Очень технологичный движок, бьются лампочки, оптимизированная трасировка лучей, работающая на любой видеокарте, разве что немного подкачала физика. Местами графика мыльная из-за каких-то фильтров, а местами фотореалистичная и классная.</td>
+				</tr>
+				<tr>
+					<td>Genshin Impact (2020)</td>
+					<td>7</td>
+					<td>Брошено</td>
+					<td>1</td>
+					<td>23.10.20</td>
+					<td>Прокачался до 20 уровня приключений, а дальше все однообразно. Длинные нудные диалоги.</td>
+				</tr>
+				<tr>
+					<td>Mafia (2002)</td>
+					<td>7.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>03.10.20</td>
+					<td>Интересная история, кинематографичность. Геймплей устарел, никого удовольствия. Сложность завышенная.</td>
+				</tr>
+				<tr>
+					<td>Crysis (2007)</td>
+					<td>7</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>27.09.20</td>
+					<td>Много игровых механник, но большая их часть посредственная. Локации ограниченные, хоть и большие, никакого цельного острова нет. Графика конечно крутая, даже сегодня, но геймплей уже всё.</td>
+				</tr>
+				<tr>
+					<td>Enter the Matrix (2003)</td>
+					<td>7</td>
+					<td>Пройдено</td>
+					<td>2</td>
+					<td>24.09.20</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Alone in the Dark: У последней черты (2008)</td>
+					<td>7.3</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>11.08.20</td>
+					<td>Много разного геймплея, местами атмосферно и интересно, но сложность завышенная и очень кривое управление.</td>
+				</tr>
+				<tr>
+					<td>Succubus (2020)</td>
+					<td>4</td>
+					<td>Брошено</td>
+					<td>0</td>
+					<td>25.07.20</td>
+					<td>Локации местами красивые, но геймплей не интересный, однообразный, еще и арены.</td>
+				</tr>
+				<tr>
+					<td>Beyond: Two Souls (2013)</td>
+					<td>9</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>22.06.20</td>
+					<td>Захватывающий интересный сюжет, разнобразные локации, атмосфера. Геймплей разнообразный, но его мало и управление очень кривое, топорное.</td>
+				</tr>
+				<tr>
+					<td>The Light Remake (2020)</td>
+					<td>8</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>06.06.20</td>
+					<td>Интересная история, философия. Хорошие загадки, кроме финальной. Местами атмосферная. Проходится на одном дыхании.</td>
+				</tr>
+				<tr>
+					<td>Mafia 2 (2010)</td>
+					<td>9.2</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>30.05.20</td>
+					<td>Разнообразные миссии, постоянно что-то новое. Очень интересный сюжет. Из минусов только плохая физика вождения автомобиля и свечение объектов.</td>
+				</tr>
+				<tr>
+					<td>Trine 4 (2019)</td>
+					<td>7.2</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>30.04.20</td>
+					<td>Красивые локации. Местами перебор со сложностью, местами изматывает. Механик столько, что о некоторых забываешь и тупишь.</td>
+				</tr>
+				<tr>
+					<td>Resident Evil 3 (2020)</td>
+					<td>9</td>
+					<td>Пройдено</td>
+					<td>2</td>
+					<td>18.04.20</td>
+					<td>Играется на одном дыхании. Похожа на 5-ую и 6-ую части, но с элементами обновленной 2-ки. Перебор с линейностью, плохо, что убрали хоррор, загадки и развилки, ожидал немного другое, но в остальном все замечательно. Было бы правильнее назвать игру как-то иначе, а не третьей частью, немного поменяв сюжет.</td>
+				</tr>
+				<tr>
+					<td>Condemned: Criminal Origins (2006)</td>
+					<td>7.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>29.01.20</td>
+					<td>Хорошая атмосфера, пострясающая озвучка от Team Racoon.</td>
+				</tr>
+				<tr>
+					<td>Aliens versus Predator 2 (2001)</td>
+					<td>6.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>16.01.20</td>
+					<td>Пройдена компания за десант. Есть интересные механики, но в остальном скучно.</td>
+				</tr>
+				<tr>
+					<td>Tomb Raider - Underworld (2008)</td>
+					<td>7</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>14.01.20</td>
+					<td>Интересные красивые локации. Геймплей разнообразный, но кривой движок всё портит.</td>
+				</tr>
+				<tr>
+					<td>Bulletstorm (2011)</td>
+					<td>5.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>03.01.20</td>
+					<td>Местами интересные локации, в остальном всё плохо.</td>
+				</tr>
+				<tr>
+					<td>Deliver Us The Moon (2018)</td>
+					<td>7</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>16.12.19</td>
+					<td>Местами интересные загадки и локации. Очень атмосферная луна, наверное одна из самых лучших в истории видеоигр.</td>
+				</tr>
+				<tr>
+					<td>Soldier of Fortune (2000)</td>
+					<td>6</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>04.12.19</td>
+					<td>Иногда попадаются красивые локации, но в остальном слишком однообразный тир.</td>
+				</tr>
+				<tr>
+					<td>Terminator Resistance (2019)</td>
+					<td>8</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>24.11.19</td>
+					<td>Хорошая игра по терминатору. Атмосфера, интересный сеттинг, разнообразные механики, сцены как будто из фильма. Если бы бюджет игры был бы больше, то игра легко бы стала хитом. Дополнение "Рубеж зачистки" пройдено 28.12.22, тоже интересное и захватывающее, но ничего нового. Дополнение "Лазутчик" пройдено 29.12.22, тоже неплохое, но маленькое.</td>
+				</tr>
+				<tr>
+					<td>Batman Vengeance (2001)</td>
+					<td>5.8</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>13.11.19</td>
+					<td>В игре много разных механик, многие из них кривые и раздражающие. Отвратительная боёвка, в которой ты с трудом можешь что-то сделать. В некоторых моментах (например, повороты на авто или код) вообще непонятно что делать без гайда. Завышенная сложность в конце окончательно портит всю игру.</td>
+				</tr>
+				<tr>
+					<td>The Dark Pictures Anthology: Man Of Medan (2019)</td>
+					<td>7.5</td>
+					<td>Пройдено</td>
+					<td>2</td>
+					<td>06.09.19</td>
+					<td>Интересное интерактивное кино, управление только не очень и не дают переигрывать момент.</td>
+				</tr>
+				<tr>
+					<td>Control (2019)</td>
+					<td>4</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>04.09.19</td>
+					<td>Неинтересный сюжет, однообразный геймплей, оружия нет, стрельба плохая, окружение однообразное, левитация плохая, нет автоприцеливания на геймпаде. Из плюсов только телекинез, да и он не спасает положение.</td>
+				</tr>
+				<tr>
+					<td>Resident Evil 2 (1998)</td>
+					<td>8.5</td>
+					<td>Пройдено</td>
+					<td>2</td>
+					<td>16.08.19</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Alien - Isolation (2014)</td>
+					<td>8.7</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>01.07.19</td>
+					<td>Поиск пути иногда изматывает.</td>
+				</tr>
+				<tr>
+					<td>Stranglehold (2007)</td>
+					<td>6.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>21.06.19</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>El Matador (2006)</td>
+					<td>7</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>28.05.19</td>
+					<td>Технически игра сделана хорошо, продвинутая физика и хорошая графика, но сюжета никакого, режиссуры нет, геймплей однообразный.</td>
+				</tr>
+				<tr>
+					<td>Resident Evil 6 (2013)</td>
+					<td>9</td>
+					<td>Пройдено</td>
+					<td>2</td>
+					<td>26.04.19</td>
+					<td>Максимум разнообразия. Физика только слабенькая.</td>
+				</tr>	
+				<tr>
+					<td>Resident Evil 5 (2009)</td>
+					<td>9.2</td>
+					<td>Пройдено</td>
+					<td>2</td>
+					<td>24.03.19</td>
+					<td>Динамичная, красивая и захватывающая игра. Дополнения очень крутые. </td>
+				</tr>	
+				<tr>
+					<td>Harry Potter and the Prisoner of Azkaban (2004)</td>
+					<td>6.7</td>
+					<td>Пройдено</td>
+					<td>2</td>
+					<td>11.03.19</td>
+					<td>Все как-то наклепано на скорую руку. Нет истории, нет какой-то гармоничности.</td>
+				</tr>
+				<tr>
+					<td>Max Payne (2001)</td>
+					<td>8</td>
+					<td>Пройдено</td>
+					<td>2</td>
+					<td>02.03.19</td>
+					<td>Очень высокая детализация для 2001 года, крутая графика.</td>
+				</tr>
+				<tr>
+					<td>Metro Exodus (2019)</td>
+					<td>8.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>25.02.19</td>
+					<td>Не совсем понравились уровни: "Волга" и "Каспий", квесты и "открытый" мир не совсем то, что ждешь от игры, а в остальном всё круто и атмосферно. Концовка эпичная.</td>
+				</tr>
+				<tr>
+					<td>Crysis 2 (2011)</td>
+					<td>8</td>
+					<td>Пройдено</td>
+					<td>2</td>
+					<td>15.02.19</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>A Story About My Uncle (2014)</td>
+					<td>6</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>23.01.19</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Hitman 2 (2018)</td>
+					<td>6</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>06.11.18</td>
+					<td>Кривое управление, однообразие и уныние. Песочницы никакой нет, псевдо песочница с балванками, ходячими по кругу. Графика крутая.</td>
+				</tr>
+				<tr>
+					<td>Shadow of the Tomb Raider (2018)</td>
+					<td>9</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>25.11.18</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Postal 2: Apocalypse Weekend (2005)</td>
+					<td>5.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>07.11.18</td>
+					<td>Слепили на скорую руку.</td>
+				</tr>
+				<tr>
+					<td>Postal 2 (2003)</td>
+					<td>7</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>07.11.18</td>
+					<td>Короткая. Бегать от задания до задания раздражает.</td>
+				</tr>
+				<tr>
+					<td>Cryostasis: Sleep of Reason (2009)</td>
+					<td>7.2</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>06.11.18</td>
+					<td>Атмосферно, только финальный босс не очень вписывается в окружение.</td>
+				</tr>
+				<tr>
+					<td>Nosferatu: The Wrath of Malachi (2003)</td>
+					<td>7.2</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>04.11.18</td>
+					<td>Атмосферно, но много лабиринтов и однообразный дизайн уровней.</td>
+				</tr>
+				<tr>
+					<td>Advent Rising (2005)</td>
+					<td>8</td>
+					<td>Пройдено</td>
+					<td>2</td>
+					<td>02.11.18</td>
+					<td>По началу не кажется чем-то интересным, но по ходу прохождения становится все интереснее и интереснее.</td>
+				</tr>
+				<tr>
+					<td>Total Overdose (2005)</td>
+					<td>7.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>30.10.18</td>
+					<td>Финальная часть игры крутая. Для 2005 года очень круто. Озвучка 1С плохая, лучше играть с оригинальной.</td>
+				</tr>
+				<tr>
+					<td>Vanquish (2017)</td>
+					<td>6.3</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>26.10.18</td>
+					<td>Красивые уровни, крутой космический сеттинг, чем собственно и интересна эта игра. Геймплей простенький, однообразный.</td>
+				</tr>
+				<tr>
+					<td>The Simpsons Hit & Run (2003)</td>
+					<td>5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>23.10.18</td>
+					<td>Пройдены только основные миссии. Геймплей однообразный, в основном это подбор предметов, на автомобиле, за время или гонки. Физика машин плохая (для 2003 года наверное пойдет).</td>
+				</tr>
+				<tr>
+					<td>Far Cry 5 (2018)</td>
+					<td>6.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>23.04.18</td>
+					<td>Трешовый сюжет.</td>
+				</tr>
+				<tr>
+					<td>Spider-Man (2001)</td>
+					<td>8</td>
+					<td>Пройдено</td>
+					<td>2</td>
+					<td>26.03.18</td>
+					<td>Простой приятный экшен про человека-паука. Уникальный геймплей. Уровень с симбиотами излишне сложный.</td>
+				</tr>
+				<tr>
+					<td>Call of Duty: WWII (2017)</td>
+					<td>5.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>11.11.17</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Mafia III (2017)</td>
+					<td>5.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>08.10.17</td>
+					<td>Полная халтура. Загубили серию.</td>
+				</tr>
+				<tr>
+					<td>Resident Evil 7: Biohazard (2017)</td>
+					<td>8</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>06.02.17</td>
+					<td>По сути новая игра, от Resident Evil только название. Пройдено дополнение "Гибель Зои" 02.07.22, оценка 5.5 и "Не герой" 04.07.22, оценка 8.</td>
+				</tr>
+				<tr>
+					<td>Rise of the Tomb Raider (2016)</td>
+					<td>9</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>17.02.16</td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	<div id="content_4"><!--VR-->
+		<h1>VR</h1>
+		<table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
+			<thead>
+				<tr>
+					<th><b>Название</b></th>
+					<th><b>Платформа</b></th>
+					<th><b>Оценка</b></th>
+					<th><b>Статус</b></th>
+					<th><b>Пройдено раз</b></th>
+					<th width="120px" class="nosort"><b>Дата прохождения</b></th>
+					<th class="nosort"><b>Комментарий</b></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Metro Awakening (2024)</td>
+					<td>Windows</td>
+					<td>7</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>22.01.25</td>
+					<td>Слишком тесные локации, мало разнообразия. Замороченное управление и местами баги. Лучше бы портанули оригинальную Метро на ВР.</td>
+				</tr>
+				<tr>
+					<td>Resident Evil 4 (2021)</td>
+					<td>Pico</td>
+					<td>9</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>23.12.24</td>
+					<td>Хороший порт, все элементы переделали на интерактивные. Жаль нет дополнений.</td>
+				</tr>
+				<tr>
+					<td>Half-Life: Black Mesa (2020)</td>
+					<td>Windows</td>
+					<td>5.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>02.12.24</td>
+					<td>Однообразно, затянуто, местами не понятно что делать.</td>
+				</tr>
+				<tr>
+					<td>Far Cry (2004)</td>
+					<td>Windows</td>
+					<td>8</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>30.06.24</td>
+					<td>Атмосферные локации, технологичный движок, разнообразный геймплей.</td>
+				</tr>
+				<tr>
+					<td>Heartshot (2024) - ранний доступ</td>
+					<td>Windows</td>
+					<td>8.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>01.06.24</td>
+					<td>Приятная стрельба, много разных механик, веселье. Есть немного багов, но они некритичные. Одна из лучших игр для VR.</td>
+				</tr>
+				<tr>
+					<td>Arizona Sunshine 2 (2023)</td>
+					<td>Windows</td>
+					<td>8.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>25.12.23</td>
+					<td>Приятная стрельба, но её многотовато, хорошая физика, много оружия. Локации простые, но со вкусом. Немало механик и интерактива.</td>
+				</tr>
+				<tr>
+					<td>Half-Life: Alyx (2020)</td>
+					<td>Windows</td>
+					<td>8</td>
+					<td>Пройдено</td>
+					<td>3</td>
+					<td>08.07.23</td>
+					<td>Хорошая атмосфера, неплохие загадки, но мало геймплея, пострелять толком не дают. В целом, одна из лучших VR игр, на сегодняшний день, которую точно стоит попробовать.</td>
+				</tr>
+				<tr>
+					<td>Crimen - Mercenary Tales (2023)</td>
+					<td>Pico</td>
+					<td>7</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>15.06.23</td>
+					<td>Механик много, но кривые и сложные. Много "резанья воды". Локации красивые.</td>
+				</tr>
+				<tr>
+					<td>Propagation: Paradise Hotel (2023)</td>
+					<td>Windows</td>
+					<td>8.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>28.05.23</td>
+					<td>Атмосферный, страшный хоррор. Много разных механик, немало интерактива, игра постоянно держит в напряжении. Немного коротковатая.</td>
+				</tr>
+				<tr>
+					<td>FREEDIVER: Triton Down (2019)</td>
+					<td>Windows</td>
+					<td>3</td>
+					<td>Брошено</td>
+					<td>0</td>
+					<td>16.05.23</td>
+					<td>Концепт хороший, реализация плохая. Кривые механики.</td>
+				</tr>
+				<tr>
+					<td>Jurassic World Aftermath (2020)</td>
+					<td>Pico</td>
+					<td>8</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>06.05.23</td>
+					<td>Простенько, но со вкусом. Немного устаешь от динозавров, не помешали бы ещё сражения. Вылеты исправились обновлением.</td>
+				</tr>
+				<tr>
+					<td>Half-Life 2: Episode Two (2007)</td>
+					<td>Windows</td>
+					<td>6.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>04.05.23</td>
+					<td>Одной Half-Life 2 для VR достаточно, далее уже будет выворачивать от них.</td>
+				</tr>
+				<tr>
+					<td>Resident Evil 3 (2020)</td>
+					<td>Windows</td>
+					<td>9</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>25.04.23</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Half-Life 2: Episode One (2005)</td>
+					<td>Windows</td>
+					<td>6.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>21.04.23</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Medal of Honor: Above and Beyond (2020)</td>
+					<td>Windows</td>
+					<td>9</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>08.04.23</td>
+					<td>Шедевр. Атмосферно, разное окружение, разнообразные игровые механики. Баги и непродуманные моменты встречаются, но они не так критичны.</td>
+				</tr>
+				<tr>
+					<td>All-In-One Sports VR (2021)</td>
+					<td>Windows</td>
+					<td>8</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>07.04.23</td>
+					<td>Популярные спортивные игры, с простым механиками, более и не нужно, жаль не все хорошо работают.</td>
+				</tr>
+				<tr>
+					<td>Resident Evil 2 (2019)</td>
+					<td>Windows</td>
+					<td>9.2</td>
+					<td>Пройдено</td>
+					<td>2</td>
+					<td>01.04.23</td>
+					<td>Шедевр. Игра полностью погружает в свой мир. Проходится на одном дыхании. В VR игра еще круче, даже пугаешься местами, шикарный мод.</td>
+				</tr>
+				<tr>
+					<td>Half-Life 2 (2004)</td>
+					<td>Windows</td>
+					<td>7.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>29.09.22</td>
+					<td>Пройдено в VR, в этом режиме вполне себе ничего, даже сегодня.</td>
+				</tr>
+				<tr>
+					<td>The Gallery - Episode 1: Call of the Starseed (2016)</td>
+					<td>Windows</td>
+					<td>7</td>
+					<td>Брошено</td>
+					<td>0</td>
+					<td>27.06.22</td>
+					<td>Выглядит интересно, но управление ужасное, нет поворотов нормальных.</td>
+				</tr>
+				<tr>
+					<td>Operation Warcade VR (2017)</td>
+					<td>Windows</td>
+					<td>7.2</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>27.01.19</td>
+					<td>Много разных VR механик в одной игре.</td>
+				</tr>
+				<tr>
+					<td>Narcosis (2017)</td>
+					<td>Windows</td>
+					<td>7.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>05.06.18</td>
+					<td>Очень атмосферный, качественный хоррор про подводную тему. Местами напоминает Outlast. Пройдена в VR.</td>
+				</tr>
+			</tbody>
+		</table>
+		<div id="sub-desc">* Пройдены на Pico 4.</div>
+	</div>
+	
+	<div id="content_5"><!--PSP-->
+		<h1>PSP игры</h1>
+		<table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
+			<thead>
+				<tr>
+					<th><b>Название</b></th>
+					<th><b>Оценка</b></th>
+					<th><b>Статус</b></th>
+					<th><b>Пройдено раз</b></th>
+					<th class="nosort"><b>Дата прохождения</b></th>
+					<th class="nosort"><b>Комментарий</b></th>
+				</tr>
+			</thead>
+			<tbody>
+			<tr>
+					<td>Metal Slug 6 (2006)</td>
+					<td>7</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>09.05.19</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Silent Hill: Shattered Memories (2010)</td>
+					<td>6.2</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>05.05.19</td>
+					<td>Интересные новые игровые механики, крутая графика.</td>
+				</tr>
+				<tr>
+					<td>Metal Slug 5 (2003)</td>
+					<td>7.2</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>14.12.18</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Gangs of London (2006)</td>
+					<td>7.2</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>07.12.18</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Metal Slug 4 (2002)</td>
+					<td>7.6</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>09.11.18</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Metal Slug 3 (2000)</td>
+					<td>7.6</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>07.11.18</td>
+					<td>Как всегда на высоте, в каждой новой версии что-нибудь новое.</td>
+				</tr>
+				<tr>
+					<td>Chili Con Carnage (2007)</td>
+					<td>6.4</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>28.10.18</td>
+					<td>Урезанный Total Overdose.</td>
+				</tr>
+				<tr>
+					<td>Metal Slug 2 (1998)</td>
+					<td>7.6</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>23.10.18</td>
+					<td>Такой же крутой платформер, как и Metal Slug 1, даже еще лучше. В конце доставила сцена, где враги, которых мы убивали всю игру вместе с нами убивали финального босса (сплотились против общего врага).</td>
+				</tr>
+				<tr>
+					<td>Metal Slug (1996)</td>
+					<td>7.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>25.09.18</td>
+					<td>Очень крутой платформер, один из лучших. Все красиво, живо и проработано, масса интересных идей.</td>
+				</tr>
+				<tr>
+					<td>Syphon Filter: Dark Mirror (2006)</td>
+					<td>6.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>17.01.18</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Syphon Filter: Logan's Shadow (2007)</td>
+					<td>8</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>24.12.17</td>
+					<td>Разнообразный геймплей.</td>
+				</tr>
+			</tbody>
+		</table>
+	
+	
+	</div>
+	
+	<div id="content_6"><!--PS1-->
+		<h1>PlayStation 1 игры</h1>
+		<table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
+			<thead>
+				<tr>
+					<th><b>Название</b></th>
+					<th><b>Оценка</b></th>
+					<th><b>Статус</b></th>
+					<th><b>Пройдено раз</b></th>
+					<th class="nosort"><b>Дата прохождения</b></th>
+					<th class="nosort"><b>Комментарий</b></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Spider-Man (2000)</td>
+					<td>8</td>
+					<td>Пройдено</td>
+					<td>4</td>
+					<td>09.09.24</td>
+					<td>Простой приятный экшен про человека-паука. Уникальный геймплей. Уровень с симбиотами излишне сложный.</td>
+				</tr>
+				<tr>
+					<td>Covert Ops: Nuclear Dawn (2000)</td>
+					<td>7</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>20.02.21</td>
+					<td>Клон Resident Evil, только в поезде. Окружение необычное, интеерсное, идея тоже. Не всегда понятно куда идти и что делать.</td>
+				</tr>
+				<tr>
+					<td>Resident Evil 1 (1996)</td>
+					<td>8</td>
+					<td>Пройдено</td>
+					<td>2</td>
+					<td>14.12.18</td>
+					<td>Затянутая, под конец уже совсем надоедает. Играется приятнее ремейка.</td>
+				</tr>
+				<tr>
+					<td>Resident Evil 2 (1998)</td>
+					<td>8.5</td>
+					<td>Пройдено</td>
+					<td>3</td>
+					<td>14.07.18</td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+		<div id="sub-desc">* Пройдены на эмуляторе Duckstation, ePSXe, с горячими сохраненями или на PSP.</div>
+	   
+	</div>
+	<div id="content_7"><!--PS2-->
+		<h1>PlayStation 2 игры</h1>
+	   	<table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
+			<thead>
+				<tr>
+					<th><b>Название</b></th>
+					<th><b>Оценка</b></th>
+					<th><b>Статус</b></th>
+					<th><b>Пройдено раз</b></th>
+					<th class="nosort"><b>Дата прохождения</b></th>
+					<th class="nosort"><b>Комментарий</b></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Spider-Man (2002)</td>
+					<td>2</td>
+					<td>Брошено</td>
+					<td>0</td>
+					<td>27.04.24</td>
+					<td>Кривое управление, кривые механики, отвратительная игра. Графика хорошая.</td>
+				</tr>
+				<tr>
+					<td>Resident Evil Code: Veronica (2002)</td>
+					<td>7</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>11.05.18</td>
+					<td>Классический Resident Evil, в стиле первых трех частей. Местами интересный.</td>
+				</tr>
+			</tbody>
+		</table>
+		<div id="sub-desc">* Пройдены на эмуляторе PCSX2, с горячими сохраненями.</div>
+	
+	</div>
+	
+	<div id="content_8"><!--PS3-->
+		<h1>PlayStation 3 игры</h1>
+	   	<table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
+			<thead>
+				<tr>
+					<th><b>Название</b></th>
+					<th><b>Оценка</b></th>
+					<th><b>Статус</b></th>
+					<th><b>Пройдено раз</b></th>
+					<th class="nosort"><b>Дата прохождения</b></th>
+					<th class="nosort"><b>Комментарий</b></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Uncharted 3: Иллюзии Дрейка (2011)</td>
+					<td>9.1</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>14.05.20</td>
+					<td>Красивые локации, разнообразный геймплей, хороший сюжет, юмор. Высокий уровень детализации и проработки. В начале немного скучновато, но потом бодренько идёт.</td>
+				</tr>
+				<tr>
+					<td>The Last of Us (2013)</td>
+					<td>9</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>13.01.19</td>
+					<td>Управление немного кривое, нет автоприцела, но в остальном всё великолепно.</td>
+				</tr>
+			</tbody>
+		</table>
+		<div id="sub-desc">* Пройдены через сервис Playstation Now или на эмуляторе RPCS3.</div>
+	</div>
+	
+	<div id="content_9"><!--PS4-->
+		<h1>PlayStation 4 игры</h1>
+	   	<table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
+			<thead>
+				<tr>
+					<th><b>Название</b></th>
+					<th><b>Оценка</b></th>
+					<th><b>Статус</b></th>
+					<th><b>Пройдено раз</b></th>
+					<th class="nosort"><b>Дата прохождения</b></th>
+					<th class="nosort"><b>Комментарий</b></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Spider-Man (2018)</td>
+					<td>8</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>08.05.20</td>
+					<td>Затянутая, не хватает плавного развития событий (по 2 босса почти подряд явный перебор), как в том же первом пауке. Побочные миссии и сбор предметов портят игру. Геймплей интересный, разнообразный, но боевка однообразная, но сделана неплохо. Город сделан потрясающе. Детские шутки и мистика тоже лишние.</td>
+				</tr>
+			</tbody>
+		</table>
+		<div id="sub-desc">* Пройдены через сервис Playstation Now.</div>
+	</div>
+	
+	<div id="content_10"><!--Nintendo Switch-->
+		<h1>Nintendo Switch</h1>
+		<table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
+			<thead>
+				<tr>
+					<th><b>Название</b></th>
+					<th><b>Оценка</b></th>
+					<th><b>Пройдено раз</b></th>
+					<th class="nosort"><b>Дата прочтения</b></th>
+					<th class="nosort"><b>Комментарий</b></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Super Mario Odyssey (2017)</td>
+					<td>8</td>
+					<td>1</td>
+					<td>11.04.22</td>
+					<td>Много разных механик, некоторые миры интересные, некоторые не очень. Луны конечно искать надоедает.</td>
+				</tr>
+			</tbody>
+		</table>
+		<div id="sub-desc">* Пройдены на эмуляторе Yuzu.</div>
+	</div>
+	
+	<div id="content_11"><!--Wii-->
+		<h1>Wii игры</h1>
+		<table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
+			<thead>
+				<tr>
+					<th><b>Название</b></th>
+					<th><b>Оценка</b></th>
+					<th><b>Статус</b></th>
+					<th><b>Пройдено раз</b></th>
+					<th class="nosort"><b>Дата прохождения</b></th>
+					<th class="nosort"><b>Комментарий</b></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Resident Evil: The Umbrella Chronicles (2007)</td>
+					<td>5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>04.07.20</td>
+					<td>Интересно было посмотреть на локации Resident Evil 1 в 3D, кроме этого ничего интересного.</td>
+				</tr>
+				<tr>
+					<td>Resident Evil: The Darkside Chronicles (2009)</td>
+					<td>5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>03.09.18</td>
+					<td>Первая подобная игра пройденная мной. Обычный тупой тир по сюжетам Resident Evil. Ничего интересного придумать не смогли, хотя тут наверное ничего и не придумаешь. Есть локации из Resident Evil 2 и Code Veronica, можно на них поглядеть.</td>
+				</tr>
+			</tbody>
+		</table>
+		<div id="sub-desc">* Пройдены на эмуляторе Dolphin, с контроллерами Razer Hydra.</div>
+	</div>
+	
+	<div id="content_12"><!--Денди-->
+		<h1>NES игры</h1>
+		<table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
+			<thead>
+				<tr>
+					<th><b>Название</b></th>
+					<th><b>Оценка</b></th>
+					<th><b>Статус</b></th>
+					<th><b>Пройдено раз</b></th>
+					<th class="nosort"><b>Дата прохождения</b></th>
+					<th class="nosort"><b>Комментарий</b></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Super Mario (1985)</td>
+					<td>7</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>15.05.24</td>
+					<td>Для своего времени хорошо, но не более.</td>
+				</tr>
+				<tr>
+					<td>Chip n Dale Rescue Rangers 2 (1993)</td>
+					<td>8.5</td>
+					<td>Пройдено</td>
+					<td>2</td>
+					<td>15.05.24</td>
+					<td>Разнообразный геймплей, хороший саундтрек. Под конец сложность завышенная.</td>
+				</tr>
+				<tr>
+					<td>Super Contra (1988)</td>
+					<td>8.5</td>
+					<td>Пройдено</td>
+					<td>2</td>
+					<td>13.05.24</td>
+					<td>Красивые карты, приятный геймплей.</td>
+				</tr>
+				<tr>
+					<td>Duck Tales 2 (1993)</td>
+					<td>9</td>
+					<td>Пройдено</td>
+					<td>2</td>
+					<td>12.05.24</td>
+					<td>Красивая, разнообразная.</td>
+				</tr>
+				<tr>
+					<td>Contra (1987)</td>
+					<td>8.5</td>
+					<td>Пройдено</td>
+					<td>3</td>
+					<td>11.05.24</td>
+					<td>Красивые карты, приятный геймплей.</td>
+				</tr>
+				<tr>
+					<td>Felix the Cat (1992)</td>
+					<td>9</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>10.05.24</td>
+					<td>Разнообразный приятный геймплей, разные локации, простые боссы.</td>
+				</tr>
+				<tr>
+					<td>The Little Mermaid (1991)</td>
+					<td>7</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>24.12.23</td>
+					<td>Простой приятный геймплей, интересные, простые боссы. Довольно коротная.</td>
+				</tr>
+				<tr>
+					<td>Toki (1989)</td>
+					<td>8</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>20.05.21</td>
+					<td>Приятный разнообразный геймплей, простые боссы.</td>
+				</tr>
+				<tr>
+					<td>Adventure Island (1986)</td>
+					<td>6</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>16.06.20</td>
+					<td>Со второй половины игра очень сложная, однообазные локации и геймплей. С сейвами пройти не удалось, пришлось еще жизни увеличить.</td>
+				</tr>
+				<tr>
+					<td>Battletoads & Double Dragon - The Ultimate Team (1993)</td>
+					<td>6</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>12.03.20</td>
+					<td>Очень сложная, присутствует разнообразие геймплея. Даже с сейвами пройти не смог, пришлось проходить с хаком жизней.</td>
+				</tr>
+				<tr>
+					<td>Chip n Dale Rescue Rangers (1990)</td>
+					<td>7</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>08.01.20</td>
+					<td>Разнообразный геймплей, имеются интересные механики. Местами сложная.</td>
+				</tr>
+				<tr>
+					<td>Darkwing Duck (1992)</td>
+					<td>5.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>19.07.19</td>
+					<td>Очень сложная.</td>
+				</tr>
+				<tr>
+					<td>Super Contra X (1991)</td>
+					<td>6</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>13.07.19</td>
+					<td>Кривая и скучная.</td>
+				</tr>
+				<tr>
+					<td>RoboCop 3 (1991)</td>
+					<td>7.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>09.07.19</td>
+					<td>Красивая, но перебор со сложностью и маленькая.</td>
+				</tr>
+				<tr>
+					<td>Disney’s Aladdin (1993)</td>
+					<td>7</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>14.03.18</td>
+					<td>Красочные карты, хороший геймплей, разнообразный. Дают полетать на ковре самолете.
+	Очень крутая возможность "сохранения". После прохождения уровня дают код из картинок, который можно ввести в меню и "загрузится" на пройденный уровень, такой метод нужно было использовать всем разработчикам игр на NES, SNES и Sega. Пройдена с горячими сохранениями.</td>
+				</tr>
+			</tbody>
+		</table>
+		<div id="sub-desc">* Пройдены на эмуляторе RetroArch (FCEUmm) на Miyoo Mini Plus, FCEUX на ПК или NesterJ на PSP, с горячими сохраненями и перемоткой.</div>
+	</div>
+	
+	<div id="content_13"><!--Sega Mega Drive-->
+		<h1>Sega Mega Drive игры</h1>
+		<table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
+			<thead>
+				<tr>
+					<th><b>Название</b></th>
+					<th><b>Оценка</b></th>
+					<th><b>Статус</b></th>
+					<th><b>Пройдено раз</b></th>
+					<th class="nosort"><b>Дата прохождения</b></th>
+					<th class="nosort"><b>Комментарий</b></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>The Terminator [Sega CD] (1993)</td>
+					<td>7</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>14.08.24</td>
+					<td>Приятная стрельба, разнообразные локации, не запарная.</td>
+				</tr>
+				<tr>
+					<td>RoboCop versus The Terminator (1993)</td>
+					<td>5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>16.06.23</td>
+					<td>Интересное окружение, хороший движок, но отвратительно высокая сложность. Пройти без читов нереально.</td>
+				</tr>
+				<tr>
+					<td>Disney’s Aladdin (1993)</td>
+					<td>6</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>05.11.19</td>
+					<td>Гораздо хуже клона на денди, совсем другая игра.</td>
+				</tr>
+				<tr>
+					<td>Contra: Hard Corps (1994)</td>
+					<td>6.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>21.05.18</td>
+					<td>Очень динамичная игра.</td>
+				</tr>
+			</tbody>
+		</table>
+		<div id="sub-desc">* Пройдены на эмуляторе PicoDrive на PSP, с горячими сохраненями.</div>
+	</div>
+	
+	<div id="content_14"><!--GameBoy-->
+		<h1>GameBoy</h1>
+		<table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
+			<thead>
+				<tr>
+					<th><b>Название</b></th>
+					<th><b>Оценка</b></th>
+					<th><b>Статус</b></th>
+					<th><b>Пройдено раз</b></th>
+					<th class="nosort"><b>Дата прохождения</b></th>
+					<th class="nosort"><b>Комментарий</b></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Contra / Operation C (1991)</td>
+					<td>7</td>
+					<td>Пройдено</td>
+					<td>2</td>
+					<td>17.05.24</td>
+					<td>Приятный геймплей, но боссы сложноватые.</td>
+				</tr>
+			</tbody>
+		</table>
+		<div id="sub-desc">* Пройдены на эмуляторе gpSP kai на PSP, с горячими сохраненями.</div>
+	</div>	
+	
+	<div id="content_15"><!--GameBoy Advance-->
+		<h1>GameBoy Advance игры</h1>
+		<table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
+			<thead>
+				<tr>
+					<th><b>Название</b></th>
+					<th><b>Оценка</b></th>
+					<th><b>Статус</b></th>
+					<th><b>Пройдено раз</b></th>
+					<th class="nosort"><b>Дата прохождения</b></th>
+					<th class="nosort"><b>Комментарий</b></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Max Payne (2003)</td>
+					<td>6.5</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>01.04.24</td>
+					<td>Хороший демейк оригинала, но уровней поменьше. Есть интерактивность мира. Из минусов враги появляются за пределами обзора и не понятно куда стрелять.</td>
+				</tr>
+				<tr>
+					<td>Harry Potter and the Sorcerer's Stone (2001)</td>
+					<td>6</td>
+					<td>Пройдено</td>
+					<td>1</td>
+					<td>31.08.20</td>
+					<td>Местами сложно, местами не понятно что делать и управление не очень.</td>
+				</tr>
+			</tbody>
+		</table>
+		<div id="sub-desc">* Пройдены на эмуляторе gpSP kai на PSP, с горячими сохраненями.</div>
+	</div>	
+	
+	<div id="content_16"><!--Книги-->
+		<h1>Книги</h1>
+		<table cellpadding="0" cellspacing="0" border="0" id="table" class="sortable">
+			<thead>
+				<tr>
+					<th><b>Название</b></th>
+					<th><b>Оценка</b></th>
+					<th><b>Прочитано раз</b></th>
+					<th class="nosort"><b>Дата прочтения</b></th>
+					<th class="nosort"><b>Комментарий</b></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Джен Синсеро - Ни Сы (2013)</td>
+					<td>3</td>
+					<td>1</td>
+					<td>19.01.24</td>
+					<td>Много противоречий, идущие друг за другом. Здравые мысли есть, но все поверхностно. Есть и вредные мысли.</td>
+				</tr>
+				<tr>
+					<td>Дэвид Бернс - Терапия Настроения (1980)</td>
+					<td>7.5</td>
+					<td>1</td>
+					<td>19.03.23</td>
+					<td>На некоторые вещи можно взглянуть под другим углом, полезная книга.</td>
+				</tr>
+				<tr>
+					<td>Азимов Айзек - Профессия (1957)</td>
+					<td>0</td>
+					<td>1</td>
+					<td>06.01.23</td>
+					<td>Смысла не понял, словоблудие.</td>
+				</tr>
+				<tr>
+					<td>Стивенсон Нил - Семиевие (2015)</td>
+					<td>0</td>
+					<td>0</td>
+					<td>14.12.22</td>
+					<td>Скучно и уныло, слишком много технических деталей.</td>
+				</tr>
+				<tr>
+					<td>Джордж Оруэлл: Скотный двор (1945)</td>
+					<td>8.5</td>
+					<td>1</td>
+					<td>06.01.21</td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+		<div id="sub-desc">* Прослушаны в формате аудиокниг.</div>
+	</div>
+	
+</div>
+<div style="color:#626366; padding-top:10px">Обновления сверху | <a href="#" onclick="ExportCSV(); return false;">Экспорт</a></div>
+<script type="text/javascript">
+function ExportCSV() {
+	// Ищем первую видимую таблицу
+	const tables = document.querySelectorAll('table');
+	let table = null;
+	for (let i = 0; i < tables.length; i++) {
+		if (tables[i].offsetParent !== null) {
+			table = tables[i];
+			break;
+		}
+	}
+
+	if (!table) {
+		alert('Нет видимой таблицы для экспорта!');
+		return;
+	}
+
+	// Ищем первый видимый h1
+	const headers = document.querySelectorAll('h1');
+	let visibleH1 = 'export';
+	for (let i = 0; i < headers.length; i++) {
+		if (headers[i].offsetParent !== null) {
+			visibleH1 = headers[i].textContent.trim();
+			break;
+		}
+	}
+
+	let csvContent = '\uFEFF'; // Добавляем BOM
+
+	// Заголовки таблицы
+	const tableHeaders = table.querySelectorAll('thead th');
+	const headerRow = Array.from(tableHeaders).map(th => `"${th.textContent.trim()}"`).join(';');
+	csvContent += headerRow + '\n';
+
+	// Строки таблицы
+	const rows = table.querySelectorAll('tbody tr');
+	rows.forEach(row => {
+		const cells = row.querySelectorAll('td');
+		const rowContent = Array.from(cells).map(td => {
+			let value = td.textContent.trim();
+			// Заменяем точку на запятую для оценок
+			if (value.length >= 1 && value.length <= 3) {
+				value = value.replace('.', ',');
+			}
+			return `"${value}"`;
+		}).join(';');
+		csvContent += rowContent + '\n';
+	});
+
+	// Сохранение CSV
+	const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+	const url = URL.createObjectURL(blob);
+	const a = document.createElement('a');
+	a.href = url;
+	a.download = visibleH1 + '.csv';
+	a.click();
+	URL.revokeObjectURL(url);
+}
+</script>
 </body>
 </html>
